@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.canvas.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" fx:id="pane" prefHeight="1000.0" prefWidth="1800.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.heiko.textrpgcreator.controller.node.WindowController">
+   <children>
+      <Pane fx:id="scalingPane" prefHeight="1000.0" prefWidth="1800.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label fx:id="label1" layoutX="-10000.0" layoutY="-10000.0" text="HERE" textFill="RED">
+               <font>
+                  <Font size="41.0" />
+               </font>
+            </Label>
+            <Label fx:id="label2" layoutX="10000.0" layoutY="-10000.0" text="HERE" textFill="RED">
+               <font>
+                  <Font size="41.0" />
+               </font>
+            </Label>
+            <Label fx:id="label4" layoutX="-10000.0" layoutY="10000.0" text="HERE" textFill="RED">
+               <font>
+                  <Font size="41.0" />
+               </font>
+            </Label>
+            <Label fx:id="label3" layoutX="10000.0" layoutY="10000.0" text="HERE" textFill="RED">
+               <font>
+                  <Font size="41.0" />
+               </font>
+            </Label>
+         </children></Pane>
+   </children>
+</AnchorPane>
