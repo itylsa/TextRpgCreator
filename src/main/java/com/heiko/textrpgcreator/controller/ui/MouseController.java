@@ -6,16 +6,21 @@
 package com.heiko.textrpgcreator.controller.ui;
 
 import com.heiko.textrpgcreator.App;
+import com.heiko.textrpgcreator.scenario.Arrow;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.AnchorPane;
 
 /**
  *
  * @author eiko1
  */
 public class MouseController {
+
+    Node n;
 
     class DragContext {
 
@@ -34,8 +39,30 @@ public class MouseController {
 
     private EventHandler<MouseEvent> mouseClicked = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent e) {
-            if(e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2) {
+            if(e.getButton() == MouseButton.PRIMARY && e.getTarget().toString().contains("scalingPane") && e.getClickCount() == 2) {
                 App.getWindowController().addDragableScenario(e.getX(), e.getY(), null);
+            }
+            if(e.getButton() == MouseButton.PRIMARY && !e.getTarget().toString().contains("scalingPane")) {
+                if(e.getTarget().toString().contains("Line") || e.getTarget().toString().contains("Circle")) {
+                    App.getScenarios().forEach((t) -> {
+                        t.getIncomingChoices().forEach((b) -> {
+                            if(b.getChoiceArrow().getLine() == e.getTarget() || b.getChoiceArrow().getCircle() == e.getTarget()) {
+                                n = b.getChoiceArrow();
+                            }
+                        });
+                    });
+                } else {
+                    n = (Node) e.getTarget();
+                }
+                if(!App.getMarkedNodes().contains(n)) {
+                    App.getMarkedNodes().add(n);
+                }
+                n = null;
+                System.out.println(App.getMarkedNodes().size());
+            }
+            if(e.getButton() == MouseButton.PRIMARY && e.getTarget().toString().contains("scalingPane")) {
+                App.getMarkedNodes().clear();
+                System.out.println(App.getMarkedNodes().size());
             }
         }
     };
@@ -56,6 +83,8 @@ public class MouseController {
 
     private EventHandler<MouseEvent> mouseDragged = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent e) {
+            if(e.isPrimaryButtonDown()) {
+            }
             if(!e.isMiddleButtonDown()) {
                 return;
             }
