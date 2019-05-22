@@ -7,6 +7,7 @@ package com.heiko.textrpgcreator.scenario;
 
 import com.heiko.textrpgcreator.App;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
@@ -14,7 +15,7 @@ import javafx.scene.shape.Line;
  *
  * @author eiko1
  */
-public class Arrow {
+public class Arrow extends Line {
 
     private Line line;
 
@@ -22,18 +23,27 @@ public class Arrow {
 
     private double radius = 15;
 
-    private double width = 10;
+    private double width = 8;
+
+    private AnchorPane startPane;
+
+    private AnchorPane endPane;
+
+    private Color color = Color.BLACK;
 
     public Arrow(AnchorPane startPane, AnchorPane endPane, double startX, double startY, double endX, double endY) {
         line = new Line(startX, startY, endX, endY);
         line.setStrokeWidth(width);
         circle = new Circle(endX, endY, radius);
+        setColor(color);
         App.getWindowController().getScalingPane().getChildren().add(line);
         App.getWindowController().getScalingPane().getChildren().add(circle);
         Scenario start = App.findScenario(startPane);
         Scenario end = App.findScenario(endPane);
         start.getOutgoingChoices().add(new Choice("", start, end, this));
         end.getIncomingChoices().add(new Choice("", start, end, this));
+        this.startPane = startPane;
+        this.endPane = endPane;
     }
 
     public void moveEnd(double endX, double endY) {
@@ -82,5 +92,32 @@ public class Arrow {
 
     public void setWidth(double width) {
         this.width = width;
+    }
+
+    public AnchorPane getStartPane() {
+        return startPane;
+    }
+
+    public void setStartPane(AnchorPane startPane) {
+        this.startPane = startPane;
+    }
+
+    public AnchorPane getEndPane() {
+        return endPane;
+    }
+
+    public void setEndPane(AnchorPane endPane) {
+        this.endPane = endPane;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+        line.setStroke(color);
+        circle.setStroke(color);
+        circle.setFill(color);
     }
 }

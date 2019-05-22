@@ -6,12 +6,14 @@ import com.heiko.textrpgcreator.controller.node.WindowController;
 import com.heiko.textrpgcreator.controller.ui.DragDropController;
 import com.heiko.textrpgcreator.controller.ui.MouseController;
 import com.heiko.textrpgcreator.controller.ui.ShortcutController;
+import com.heiko.textrpgcreator.scenario.Arrow;
 import com.heiko.textrpgcreator.scenario.Scenario;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -38,6 +40,8 @@ public class App extends Application {
 
     private static Scenario currentEdit;
 
+    private static List<Node> markedNodes = new ArrayList<>();
+
     @Override
     public void start(Stage stage) throws IOException {
         scene = new Scene(loadFXML("Window"));
@@ -48,11 +52,36 @@ public class App extends Application {
         stage.show();
     }
 
+    public static void addMarkedNode(Node node) {
+        if(!markedNodes.contains(node)) {
+            if(node.toString().contains("Line")) {
+                Arrow a = (Arrow) node;
+                
+            } else if(node.toString().contains("coverPane")) {
+
+            }
+            System.out.println(node);
+            markedNodes.add(node);
+            System.out.println(markedNodes.size());
+        } else {
+            removeMarkedNode(node);
+        }
+    }
+
+    public static void removeMarkedNode(Node node) {
+        markedNodes.remove(node);
+        System.out.println(markedNodes.size());
+    }
+
+    public static void clearMarkedNodes() {
+        markedNodes.clear();
+        System.out.println(markedNodes.size());
+    }
+
     public static Scenario findScenario(AnchorPane pane) {
         scenarios.forEach((t) -> {
             if(t.getDragableScenarioController().getAnchorParentPane() == pane) {
                 currentEdit = t;
-//                System.out.println("Found");
             }
         });
         return currentEdit;
@@ -132,5 +161,9 @@ public class App extends Application {
 
     public static Scene getScene() {
         return scene;
+    }
+
+    public static List<Node> getMarkedNodes() {
+        return markedNodes;
     }
 }

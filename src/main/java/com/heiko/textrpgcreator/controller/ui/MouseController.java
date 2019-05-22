@@ -54,15 +54,11 @@ public class MouseController {
                 } else {
                     n = (Node) e.getTarget();
                 }
-                if(!App.getMarkedNodes().contains(n)) {
-                    App.getMarkedNodes().add(n);
-                }
+                App.addMarkedNode(n);
                 n = null;
-                System.out.println(App.getMarkedNodes().size());
             }
             if(e.getButton() == MouseButton.PRIMARY && e.getTarget().toString().contains("scalingPane")) {
-                App.getMarkedNodes().clear();
-                System.out.println(App.getMarkedNodes().size());
+                App.clearMarkedNodes();
             }
         }
     };

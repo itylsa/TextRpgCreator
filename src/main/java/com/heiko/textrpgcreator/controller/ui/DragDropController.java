@@ -11,6 +11,7 @@ import com.heiko.textrpgcreator.scenario.Arrow;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.event.EventHandler;
+import javafx.geometry.Point2D;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
@@ -44,9 +45,9 @@ public class DragDropController {
 
     private List<Arrow> currentIncomingArrows = new ArrayList<Arrow>();
 
-    private double horizontal;
+    private Point2D startPoint = Point2D.ZERO;
 
-    private double vertical;
+    private Point2D endPoint = Point2D.ZERO;
 
     public DragDropController() {
         setDragDetected();
@@ -107,20 +108,10 @@ public class DragDropController {
                     if(e.getSource().toString().contains("AnchorPane")) {
                         AnchorPane aPane = (AnchorPane) e.getSource();
                         moveNode(e.getGestureSource(), e.getX() + aPane.getLayoutX(), e.getY() + aPane.getLayoutY());
-                        currentOutgoingArrows.forEach((t) -> {
-                            t.moveStart(e.getX() + aPane.getLayoutX(), e.getY() + aPane.getLayoutY());
-                        });
-                        currentIncomingArrows.forEach((t) -> {
-                            t.moveEnd(e.getX() + aPane.getLayoutX(), e.getY() + aPane.getLayoutY());
-                        });
+                        moveArrows(e);
                     } else {
                         moveNode(e.getGestureSource(), e.getX(), e.getY());
-                        currentOutgoingArrows.forEach((t) -> {
-                            t.moveStart(e.getX(), e.getY());
-                        });
-                        currentIncomingArrows.forEach((t) -> {
-                            t.moveEnd(e.getX(), e.getY());
-                        });
+                        moveArrows(e);
                     }
                 }
                 if(db.hasString() && db.getString().equals("new Arrow") && e.getSource().toString().contains("scalingPane")) {
@@ -132,6 +123,27 @@ public class DragDropController {
                 e.consume();
             }
         };
+    }
+
+    private void moveArrows(DragEvent e) {
+        if(currentOutgoingArrows.size() > 0) {
+            currentOutgoingArrows.forEach((t) -> {
+                whichSide(t.getStartPane(), t.getEndPane());
+                t.moveStart(startPoint.getX(), startPoint.getY());
+                t.moveEnd(endPoint.getX(), endPoint.getY());
+                startPoint = Point2D.ZERO;
+                endPoint = Point2D.ZERO;
+            });
+        }
+        if(currentIncomingArrows.size() > 0) {
+            currentIncomingArrows.forEach((t) -> {
+                whichSide(t.getStartPane(), t.getEndPane());
+                t.moveStart(startPoint.getX(), startPoint.getY());
+                t.moveEnd(endPoint.getX(), endPoint.getY());
+                startPoint = Point2D.ZERO;
+                endPoint = Point2D.ZERO;
+            });
+        }
     }
 
     public void setDragEntered() {
@@ -167,9 +179,8 @@ public class DragDropController {
                 boolean success = false;
                 if(db.hasString() && db.getString().equals("DRAG ME")) {
                     success = true;
-                    currentIncomingArrows.clear();
-                    currentOutgoingArrows.clear();
                 }
+
                 AnchorPane targetPane = null;
                 if(db.hasString() && db.getString().equals("new Arrow") && e.getGestureTarget().toString().contains("scalingPane")) {
                     App.getWindowController().addDragableScenario(e.getX(), e.getY(), null);
@@ -178,15 +189,19 @@ public class DragDropController {
                 if(db.hasString() && db.getString().equals("new Arrow") && e.getGestureTarget().toString().contains("AnchorPane")) {
                     targetPane = (AnchorPane) e.getGestureTarget();
                 }
-                whichSide(currentPane, targetPane);
-                System.out.println(horizontal);
-                System.out.println(vertical);
-                new Arrow(currentPane, targetPane, currentPane.getLayoutX() + currentPane.getPrefWidth() / 2 + horizontal, currentPane.getLayoutY() + currentPane.getPrefHeight() / 2 + vertical,
-                        targetPane.getLayoutX() + targetPane.getPrefWidth() / 2 - horizontal, targetPane.getLayoutY() + targetPane.getPrefHeight() / 2 - vertical);
+
+                if(targetPane != null) {
+                    whichSide(currentPane, targetPane);
+                    new Arrow(currentPane, targetPane, startPoint.getX(), startPoint.getY(), endPoint.getX(), endPoint.getY());
+                }
+
                 Pane ccp = (Pane) currentPane.getChildren().get(1);
                 ccp.setStyle("-fx-border-color: black; -fx-border-width: 1px");
-                vertical = 0;
-                horizontal = 0;
+
+                currentIncomingArrows.clear();
+                currentOutgoingArrows.clear();
+                startPoint = Point2D.ZERO;
+                endPoint = Point2D.ZERO;
                 e.setDropCompleted(success);
                 e.consume();
             }
@@ -205,18 +220,20 @@ public class DragDropController {
         double differenceX = currentPane.getLayoutX() - targetPane.getLayoutX();
         double differenceY = currentPane.getLayoutY() - targetPane.getLayoutY();
         if(Math.abs(differenceX) > Math.abs(differenceY)) {
-            System.out.println("HORIZONTAL");
             if(differenceX < 0) {
-                horizontal = currentPane.getPrefWidth() / 2;
+                startPoint = new Point2D(currentPane.getLayoutX() + currentPane.getPrefWidth(), currentPane.getLayoutY() + currentPane.getPrefHeight() / 2);
+                endPoint = new Point2D(targetPane.getLayoutX(), targetPane.getLayoutY() + targetPane.getPrefHeight() / 2);
             } else {
-                horizontal = -currentPane.getPrefWidth() / 2;
+                startPoint = new Point2D(currentPane.getLayoutX(), currentPane.getLayoutY() + currentPane.getPrefHeight() / 2);
+                endPoint = new Point2D(targetPane.getLayoutX() + targetPane.getPrefWidth(), targetPane.getLayoutY() + targetPane.getPrefHeight() / 2);
             }
         } else {
-            System.out.println("VERTICAL");
             if(differenceY < 0) {
-                vertical = currentPane.getPrefHeight() / 2;
+                startPoint = new Point2D(currentPane.getLayoutX() + currentPane.getPrefWidth() / 2, currentPane.getLayoutY() + currentPane.getPrefHeight());
+                endPoint = new Point2D(targetPane.getLayoutX() + targetPane.getPrefWidth() / 2, targetPane.getLayoutY());
             } else {
-                vertical = -currentPane.getPrefHeight() / 2;
+                startPoint = new Point2D(currentPane.getLayoutX() + currentPane.getPrefWidth() / 2, currentPane.getLayoutY());
+                endPoint = new Point2D(targetPane.getLayoutX() + targetPane.getPrefWidth() / 2, targetPane.getLayoutY() + targetPane.getPrefHeight());
             }
         }
     }
