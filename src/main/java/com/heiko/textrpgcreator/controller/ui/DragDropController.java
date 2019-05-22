@@ -8,6 +8,7 @@ package com.heiko.textrpgcreator.controller.ui;
 import com.heiko.textrpgcreator.App;
 import com.heiko.textrpgcreator.controller.node.DragableScenarioController;
 import com.heiko.textrpgcreator.scenario.Arrow;
+import com.heiko.textrpgcreator.scenario.Scenario;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.event.EventHandler;
@@ -41,6 +42,8 @@ public class DragDropController {
 
     private AnchorPane currentPane;
 
+    private List<Scenario> markedPaneScenarios = new ArrayList();
+
     private List<Arrow> currentOutgoingArrows = new ArrayList<Arrow>();
 
     private List<Arrow> currentIncomingArrows = new ArrayList<Arrow>();
@@ -58,12 +61,6 @@ public class DragDropController {
         setDragDone();
     }
 
-    private void moveNode(Object pane, double x, double y) {
-        AnchorPane aPane = (AnchorPane) pane;
-        aPane.setLayoutX(x - aPane.getPrefWidth() / 2);
-        aPane.setLayoutY(y - aPane.getPrefHeight() / 2);
-    }
-
     public void setDragDetected() {
         dragDetected = new EventHandler<MouseEvent>() {
             public void handle(MouseEvent e) {
@@ -73,13 +70,20 @@ public class DragDropController {
                     AnchorPane aPane = (AnchorPane) e.getSource();
                     db = aPane.startDragAndDrop(TransferMode.ANY);
                     content.putString("DRAG ME");
-                    App.findScenario(aPane);
-                    App.getCurrentEdit().getOutgoingChoices().forEach((t) -> {
-                        currentOutgoingArrows.add(t.getChoiceArrow());
-                    });
-                    App.getCurrentEdit().getIncomingChoices().forEach((t) -> {
-                        currentIncomingArrows.add(t.getChoiceArrow());
-                    });
+                    currentPane = aPane;
+                    if(!App.getMarkedNodes().contains(aPane.getChildren().get(1))) {
+                        App.addMarkedNode(aPane.getChildren().get(1), true);
+                    }
+                    if(markedPaneScenarios.size() > 0) {
+                        markedPaneScenarios.forEach((t) -> {
+                            t.getIncomingChoices().forEach((b) -> {
+                                currentIncomingArrows.add(b.getChoiceArrow());
+                            });
+                            t.getOutgoingChoices().forEach((b) -> {
+                                currentOutgoingArrows.add(b.getChoiceArrow());
+                            });
+                        });
+                    }
                 }
                 if(e.getButton() == MouseButton.SECONDARY) {
                     if(e.getSource().getClass().toString().contains("AnchorPane")) {
@@ -106,12 +110,27 @@ public class DragDropController {
                 if(db.hasString() && db.getString().equals("DRAG ME")) {
                     e.acceptTransferModes(TransferMode.COPY_OR_MOVE);
                     if(e.getSource().toString().contains("AnchorPane")) {
-                        AnchorPane aPane = (AnchorPane) e.getSource();
-                        moveNode(e.getGestureSource(), e.getX() + aPane.getLayoutX(), e.getY() + aPane.getLayoutY());
+                        markedPaneScenarios.forEach((t) -> {
+                            moveNode(t, e.getX() + t.getDragableScenarioController().getAnchorParentPane().getLayoutX(), e.getY() + t.getDragableScenarioController().getAnchorParentPane().getLayoutY());
+                        });
                         moveArrows(e);
+
+//                        AnchorPane aPane = (AnchorPane) e.getSource();
+//                        moveNode(e.getGestureSource(), e.getX() + aPane.getLayoutX(), e.getY() + aPane.getLayoutY());
+//                        moveArrows(e);
                     } else {
-                        moveNode(e.getGestureSource(), e.getX(), e.getY());
+                        markedPaneScenarios.forEach((t) -> {
+                            if(currentPane == t.getDragableScenarioController().getAnchorParentPane()) {
+                                moveNode(t, e.getX(), e.getY());
+                            } else {
+//                                moveNode(t, e.getX() + t.getDragableScenarioController().getAnchorParentPane().getLayoutX(), e.getY() + t.getDragableScenarioController().getAnchorParentPane().getLayoutY());
+                                moveNode(t, t.getDragableScenarioController().getAnchorParentPane().getLayoutX() - currentPane.getLayoutX(), t.getDragableScenarioController().getAnchorParentPane().getLayoutY() - currentPane.getLayoutY());
+                            }
+                        });
                         moveArrows(e);
+
+//                        moveNode(e.getGestureSource(), e.getX(), e.getY());
+//                        moveArrows(e);
                     }
                 }
                 if(db.hasString() && db.getString().equals("new Arrow") && e.getSource().toString().contains("scalingPane")) {
@@ -123,6 +142,13 @@ public class DragDropController {
                 e.consume();
             }
         };
+    }
+
+    private void moveNode(Object pane, double x, double y) {
+        Scenario s = (Scenario) pane;
+        AnchorPane aPane = s.getDragableScenarioController().getAnchorParentPane();
+        aPane.setLayoutX(x - aPane.getPrefWidth() / 2);
+        aPane.setLayoutY(y - aPane.getPrefHeight() / 2);
     }
 
     private void moveArrows(DragEvent e) {
@@ -194,9 +220,10 @@ public class DragDropController {
                     whichSide(currentPane, targetPane);
                     new Arrow(currentPane, targetPane, startPoint.getX(), startPoint.getY(), endPoint.getX(), endPoint.getY());
                 }
-
                 Pane ccp = (Pane) currentPane.getChildren().get(1);
-                ccp.setStyle("-fx-border-color: black; -fx-border-width: 1px");
+                if(ccp.getStyle().contains("border")) {
+                    ccp.setStyle("-fx-border-color: black; -fx-border-width: 1px");
+                }
 
                 currentIncomingArrows.clear();
                 currentOutgoingArrows.clear();
@@ -260,5 +287,9 @@ public class DragDropController {
 
     public EventHandler<DragEvent> getDragDone() {
         return dragDone;
+    }
+
+    public List<Scenario> getMarkedPaneScenarios() {
+        return markedPaneScenarios;
     }
 }
