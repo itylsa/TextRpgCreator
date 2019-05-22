@@ -77,7 +77,7 @@ public class DragableScenarioController extends Controller implements Initializa
         textTitle.setText(text);
     }
 
-    public void setBodyAndTitle(String body, String title) {
+    public void setBodyAndTitle(String title, String body) {
         setTextInBody(body);
         setTextInTitle(title);
     }

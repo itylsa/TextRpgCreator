@@ -7,12 +7,15 @@ package com.heiko.textrpgcreator.controller.ui;
 
 import com.heiko.textrpgcreator.App;
 import com.heiko.textrpgcreator.scenario.Arrow;
+import com.heiko.textrpgcreator.scenario.Choice;
+import com.heiko.textrpgcreator.scenario.Scenario;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 
 /**
  *
@@ -21,16 +24,6 @@ import javafx.scene.layout.AnchorPane;
 public class MouseController {
 
     Node n;
-
-    class DragContext {
-
-        double mouseAnchorX;
-        double mouseAnchorY;
-
-        double translateAnchorX;
-        double translateAnchorY;
-
-    }
 
     private static final double MAX_SCALE = 1.0d;
     private static final double MIN_SCALE = 0.001d;
@@ -41,6 +34,16 @@ public class MouseController {
         public void handle(MouseEvent e) {
             if(e.getButton() == MouseButton.PRIMARY && e.getTarget().toString().contains("scalingPane") && e.getClickCount() == 2) {
                 App.getWindowController().addDragableScenario(e.getX(), e.getY(), null);
+            }
+            if(e.getButton() == MouseButton.PRIMARY && e.getTarget().toString().contains("coverPane") && (e.getClickCount() == 2 || e.getClickCount() == 4)) {
+                Pane p = (Pane) e.getTarget();
+                Scenario scenario = App.findScenario((AnchorPane) p.getParent());
+                App.openEditor("ScenarioEditor", scenario, null);
+            }
+            if(e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2 && (e.getTarget().toString().contains("Line") || e.getTarget().toString().contains("Circle"))) {
+                Node n = (Node) e.getTarget();
+                Choice choice = App.findScenario(n);
+                App.openEditor("ChoiceEditor", null, choice);
             }
             if(e.getButton() == MouseButton.PRIMARY && !e.getTarget().toString().contains("scalingPane")) {
                 if(e.getTarget().toString().contains("Line") || e.getTarget().toString().contains("Circle")) {
@@ -152,6 +155,16 @@ public class MouseController {
         }
 
         return value;
+    }
+
+    class DragContext {
+
+        double mouseAnchorX;
+        double mouseAnchorY;
+
+        double translateAnchorX;
+        double translateAnchorY;
+
     }
 
     public EventHandler<MouseEvent> getMouseClicked() {

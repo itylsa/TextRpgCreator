@@ -16,3 +16,19 @@ and open the template in the editor.
     -fx-hbar-policy: never;
     -fx-vbar-policy: never;
 }
+
+.text-area {
+    text-area-background: black ;
+}
+
+#scenarioTitle .content {
+    -fx-background-color: text-area-background ;
+}
+
+#scenarioText .content {
+    -fx-background-color: text-area-background ;
+}
+
+#choiceText .content {
+    -fx-background-color: text-area-background ;
+}

@@ -1,12 +1,15 @@
 package com.heiko.textrpgcreator;
 
+import com.heiko.textrpgcreator.controller.node.ChoiceEditorController;
 import com.heiko.textrpgcreator.controller.node.Controller;
 import com.heiko.textrpgcreator.controller.node.DragableScenarioController;
+import com.heiko.textrpgcreator.controller.node.ScenarioEditorController;
 import com.heiko.textrpgcreator.controller.node.WindowController;
 import com.heiko.textrpgcreator.controller.ui.DragDropController;
 import com.heiko.textrpgcreator.controller.ui.MouseController;
 import com.heiko.textrpgcreator.controller.ui.ShortcutController;
 import com.heiko.textrpgcreator.scenario.Arrow;
+import com.heiko.textrpgcreator.scenario.Choice;
 import com.heiko.textrpgcreator.scenario.Scenario;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,6 +20,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
 /**
@@ -40,9 +44,19 @@ public class App extends Application {
 
     private static Scenario currentEdit;
 
+    private static Choice currentChoice;
+
     private static List<Node> markedNodes = new ArrayList<>();
 
     private static boolean arrowExists = false;
+
+    private static ChoiceEditorController choiceEditorController;
+
+    private static ScenarioEditorController scenarioEditorController;
+
+    private static Stage editorStage;
+
+    private static Scene editorScene;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -131,6 +145,24 @@ public class App extends Application {
         return currentEdit;
     }
 
+    public static Choice findScenario(Node node) {
+        App.getScenarios().forEach((t) -> {
+            t.getIncomingChoices().forEach((b) -> {
+                if(b.getChoiceArrow().getLine() == node || b.getChoiceArrow().getCircle() == node) {
+                    currentChoice = b;
+                }
+            });
+            if(currentChoice == null) {
+                t.getOutgoingChoices().forEach((b) -> {
+                    if(b.getChoiceArrow().getLine() == node || b.getChoiceArrow().getCircle() == node) {
+                        currentChoice = b;
+                    }
+                });
+            }
+        });
+        return currentChoice;
+    }
+
     public static boolean arrowAllreadyExists(AnchorPane startPane, AnchorPane targetPane) {
         Scenario startScenario = findScenario(startPane);
         Scenario targetScenario = findScenario(targetPane);
@@ -176,6 +208,32 @@ public class App extends Application {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static void openEditor(String fxml, Scenario scenario, Choice choice) {
+        System.out.println(fxml);
+        editorStage = new Stage();
+        editorScene = new Scene(loadFXML(fxml));
+        editorScene.getStylesheets().clear();
+        editorScene.getStylesheets().add(App.class.getResource("MainCSS.css").toExternalForm());
+        editorStage.setScene(editorScene);
+        editorStage.setResizable(false);
+        if(fxml.equals("ScenarioEditor")) {
+            scenarioEditorController.openScenarioEditor(scenario);
+            editorStage.setOnCloseRequest(e -> {
+                scenarioEditorController.closeScenarioEditor();
+            });
+        } else {
+            choiceEditorController.openChoiceEditor(choice);
+            editorStage.setOnCloseRequest(e -> {
+                choiceEditorController.closeChoiceEditor();
+            });
+        }
+        editorStage.show();
+    }
+
+    public static void closeEditor() {
+        editorStage.close();
     }
 
     public static void main(String[] args) {
@@ -228,5 +286,33 @@ public class App extends Application {
 
     public static void setArrowExists(boolean arrowExists) {
         App.arrowExists = arrowExists;
+    }
+
+    public static ChoiceEditorController getChoiceEditorController() {
+        return choiceEditorController;
+    }
+
+    public static void setChoiceEditorController(ChoiceEditorController choiceEditorController) {
+        App.choiceEditorController = choiceEditorController;
+    }
+
+    public static ScenarioEditorController getScenarioEditorController() {
+        return scenarioEditorController;
+    }
+
+    public static void setScenarioEditorController(ScenarioEditorController scenarioEditorController) {
+        App.scenarioEditorController = scenarioEditorController;
+    }
+
+    public static void setCurrentEdit(Scenario currentEdit) {
+        App.currentEdit = currentEdit;
+    }
+
+    public static Choice getCurrentChoice() {
+        return currentChoice;
+    }
+
+    public static void setCurrentChoice(Choice currentChoice) {
+        App.currentChoice = currentChoice;
     }
 }

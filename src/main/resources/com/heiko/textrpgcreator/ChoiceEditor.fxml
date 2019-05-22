@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="800.0" style="-fx-background-color: grey;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="com.heiko.textrpgcreator.controller.node.ChoiceEditorController">
+   <children>
+      <VBox fx:id="box" alignment="TOP_CENTER" prefHeight="1000.0" prefWidth="800.0" spacing="5.0">
+         <children>
+            <Label fx:id="textLabel" text="Label" textFill="#00feff">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <TextArea fx:id="choiceText" prefHeight="970.0" prefWidth="800.0" />
+         </children>
+         <padding>
+            <Insets top="5.0" />
+         </padding>
+      </VBox>
+   </children>
+</AnchorPane>

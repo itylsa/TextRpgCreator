@@ -36,6 +36,8 @@ public class Arrow extends Line {
 
     private Color color = Color.BLACK;
 
+    private boolean hasText = false;
+
     public Arrow(AnchorPane startPane, AnchorPane endPane, double startX, double startY, double endX, double endY) {
         line = new Line(startX, startY, endX, endY);
         line.setStrokeWidth(width);
@@ -56,7 +58,11 @@ public class Arrow extends Line {
     }
 
     public void removeMarked() {
-        setColor(Color.BLACK);
+        if(hasText) {
+            setColor(Color.GREEN);
+        } else {
+            setColor(Color.BLACK);
+        }
     }
 
     public void moveEnd(double endX, double endY) {
@@ -142,5 +148,13 @@ public class Arrow extends Line {
         line.setStroke(color);
         circle.setStroke(color);
         circle.setFill(color);
+    }
+
+    public boolean isHasText() {
+        return hasText;
+    }
+
+    public void setHasText(boolean hasText) {
+        this.hasText = hasText;
     }
 }
