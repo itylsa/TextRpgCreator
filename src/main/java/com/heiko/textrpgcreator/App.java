@@ -42,6 +42,8 @@ public class App extends Application {
 
     private static List<Node> markedNodes = new ArrayList<>();
 
+    private static boolean arrowExists = false;
+
     @Override
     public void start(Stage stage) throws IOException {
         scene = new Scene(loadFXML("Window"));
@@ -129,6 +131,17 @@ public class App extends Application {
         return currentEdit;
     }
 
+    public static boolean arrowAllreadyExists(AnchorPane startPane, AnchorPane targetPane) {
+        Scenario startScenario = findScenario(startPane);
+        Scenario targetScenario = findScenario(targetPane);
+        startScenario.getOutgoingChoices().forEach((s) -> {
+            if(s.getEndScenario() == targetScenario) {
+                arrowExists = true;
+            }
+        });
+        return arrowExists;
+    }
+
     private void addKeyListeners() {
         scene.setOnKeyPressed(shortcutController.getKeyPressed());
         scene.setOnKeyReleased(shortcutController.getKeyReleased());
@@ -207,5 +220,13 @@ public class App extends Application {
 
     public static List<Node> getMarkedNodes() {
         return markedNodes;
+    }
+
+    public static boolean isArrowExists() {
+        return arrowExists;
+    }
+
+    public static void setArrowExists(boolean arrowExists) {
+        App.arrowExists = arrowExists;
     }
 }

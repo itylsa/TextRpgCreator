@@ -211,9 +211,13 @@ public class DragDropController {
                     targetPane = (AnchorPane) e.getGestureTarget();
                 }
 
-                if(targetPane != null) {
+                if(targetPane != null && !App.arrowAllreadyExists(currentPane, targetPane)) {
                     whichSide(currentPane, targetPane);
                     new Arrow(currentPane, targetPane, startPoint.getX(), startPoint.getY(), endPoint.getX(), endPoint.getY());
+                } else {
+                    App.setArrowExists(false);
+                    System.out.println("Arrow exists");
+                    //TODO
                 }
                 Pane ccp = (Pane) currentPane.getChildren().get(1);
                 if(ccp.getStyle().contains("border")) {
