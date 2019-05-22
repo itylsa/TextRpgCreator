@@ -62,7 +62,6 @@ public class App extends Application {
             }
             markedNodes.add(node);
         } else {
-            System.out.println("HERE");
             if(node.toString().contains("coverPane")) {
                 removeMarkedNode(node, "coverPane");
             }
@@ -111,6 +110,14 @@ public class App extends Application {
             }
         });
         markedNodes.clear();
+    }
+
+    public static void markAllNodes() {
+        clearMarkedNodes();
+        dragableScenarioControllers.forEach((t) -> {
+            markedNodes.add(t.getCoverPane());
+            markPane(t.getCoverPane());
+        });
     }
 
     public static Scenario findScenario(AnchorPane pane) {

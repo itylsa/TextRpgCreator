@@ -16,7 +16,7 @@ import javafx.scene.input.KeyEvent;
 public class ShortcutController {
 
     private boolean isControlPressed = false;
-    
+
     private boolean isShiftPressed = false;
 
     private EventHandler<KeyEvent> keyPressed = new EventHandler<KeyEvent>() {
@@ -31,6 +31,9 @@ public class ShortcutController {
             //If control and s are pressed
             if(e.getCode().toString().equals("S") && isControlPressed) {
                 System.out.println("SAVE");
+            }
+            if(e.getCode().toString().equals("A") && isControlPressed) {
+                App.markAllNodes();
             }
         }
     };
@@ -61,5 +64,13 @@ public class ShortcutController {
 
     public boolean isIsShiftPressed() {
         return isShiftPressed;
+    }
+
+    public void setIsControlPressed(boolean isControlPressed) {
+        this.isControlPressed = isControlPressed;
+    }
+
+    public void setIsShiftPressed(boolean isShiftPressed) {
+        this.isShiftPressed = isShiftPressed;
     }
 }
