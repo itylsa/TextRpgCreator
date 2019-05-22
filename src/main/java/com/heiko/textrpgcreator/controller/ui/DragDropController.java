@@ -92,8 +92,8 @@ public class DragDropController {
                         content.putString("new Arrow");
                         currentPane = aPane;
                         Pane ccp = (Pane) currentPane.getChildren().get(1);
-                        ccp.setStyle("-fx-border-color: lightgreen; -fx-border-width: 5px");
                         App.clearMarkedNodes();
+                        ccp.setStyle("-fx-border-color: lightgreen; -fx-border-width: 5px");
                     }
                 }
                 if(db != null) {
@@ -131,7 +131,7 @@ public class DragDropController {
                 if(db.hasString() && db.getString().equals("new Arrow") && e.getSource().toString().contains("scalingPane")) {
                     e.acceptTransferModes(TransferMode.COPY_OR_MOVE);
                 }
-                if(db.hasString() && db.getString().equals("new Arrow") && e.getSource().toString().contains("AnchorPane") && currentPane != e.getSource()) {
+                if(db.hasString() && db.getString().equals("new Arrow") && e.getSource().toString().contains("AnchorPane")) {
                     e.acceptTransferModes(TransferMode.COPY_OR_MOVE);
                 }
                 e.consume();
@@ -211,9 +211,12 @@ public class DragDropController {
                     targetPane = (AnchorPane) e.getGestureTarget();
                 }
 
-                if(targetPane != null && !App.arrowAllreadyExists(currentPane, targetPane)) {
+                System.out.println(e.getTarget());
+                if(targetPane != null && !App.arrowAllreadyExists(currentPane, targetPane) && currentPane.getChildren().get(1) != e.getTarget()) {
                     whichSide(currentPane, targetPane);
                     new Arrow(currentPane, targetPane, startPoint.getX(), startPoint.getY(), endPoint.getX(), endPoint.getY());
+                } else if(currentPane != e.getSource()) {
+                    System.out.println("Cant go on itself");
                 } else {
                     App.setArrowExists(false);
                     System.out.println("Arrow exists");
