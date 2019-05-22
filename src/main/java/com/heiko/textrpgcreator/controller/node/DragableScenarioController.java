@@ -33,6 +33,8 @@ public class DragableScenarioController extends Controller implements Initializa
     @FXML
     private Pane coverPane;
     
+    private boolean marked = false;
+
     private final BooleanProperty firstTime = new SimpleBooleanProperty(true);
 
     @Override
@@ -41,7 +43,17 @@ public class DragableScenarioController extends Controller implements Initializa
         removeFocus();
         addDragDropEvents();
     }
-    
+
+    public void setMarked() {
+        marked = true;
+        coverPane.setStyle("-fx-background-color: blue; -fx-opacity: 0.5");
+    }
+
+    public void removeMarked() {
+        marked = false;
+        coverPane.setStyle("-fx-opacity: 0.0");
+    }
+
     public void addDragDropEvents() {
         pane.setOnDragDetected(App.getDragDropController().getDragDetected());
         pane.setOnDragOver(App.getDragDropController().getDragOver());

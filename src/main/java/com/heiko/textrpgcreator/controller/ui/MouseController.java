@@ -54,10 +54,10 @@ public class MouseController {
                 } else {
                     n = (Node) e.getTarget();
                 }
-                App.addMarkedNode(n);
+                App.addMarkedNode(n, App.getShortcutController().isIsShiftPressed());
                 n = null;
             }
-            if(e.getButton() == MouseButton.PRIMARY && e.getTarget().toString().contains("scalingPane")) {
+            if(e.getButton() == MouseButton.PRIMARY && e.getTarget().toString().contains("scalingPane") && !App.getShortcutController().isIsShiftPressed()) {
                 App.clearMarkedNodes();
             }
         }

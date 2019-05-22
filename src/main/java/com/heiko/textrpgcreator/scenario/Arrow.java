@@ -8,6 +8,9 @@ package com.heiko.textrpgcreator.scenario;
 import com.heiko.textrpgcreator.App;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
@@ -18,6 +21,8 @@ import javafx.scene.shape.Line;
 public class Arrow extends Line {
 
     private Line line;
+
+    private Line fillLine;
 
     private Circle circle;
 
@@ -46,6 +51,14 @@ public class Arrow extends Line {
         this.endPane = endPane;
     }
 
+    public void setMarked() {
+        setColor(Color.AQUA);
+    }
+
+    public void removeMarked() {
+        setColor(Color.BLACK);
+    }
+
     public void moveEnd(double endX, double endY) {
         setEndLine(endX, endY);
         setCircleCenter(endX, endY);
@@ -55,14 +68,24 @@ public class Arrow extends Line {
         setStartLine(startX, startY);
     }
 
-    public void setEndLine(double endX, double endY) {
-        line.setEndX(endX);
-        line.setEndY(endY);
-    }
-
     public void setStartLine(double startX, double startY) {
         line.setStartX(startX);
         line.setStartY(startY);
+        if(fillLine != null) {
+            fillLine.setStartX(startX);
+            fillLine.setStartY(startY);
+            fillLine.toFront();
+        }
+    }
+
+    public void setEndLine(double endX, double endY) {
+        line.setEndX(endX);
+        line.setEndY(endY);
+        if(fillLine != null) {
+            fillLine.setEndX(endX);
+            fillLine.setEndY(endY);
+            fillLine.toFront();
+        }
     }
 
     public void setCircleCenter(double centerX, double centerY) {

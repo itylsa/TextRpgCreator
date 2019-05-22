@@ -52,30 +52,65 @@ public class App extends Application {
         stage.show();
     }
 
-    public static void addMarkedNode(Node node) {
+    public static void addMarkedNode(Node node, boolean isShiftPressed) {
+        if(!isShiftPressed) {
+            clearMarkedNodes();
+        }
         if(!markedNodes.contains(node)) {
-            if(node.toString().contains("Line")) {
-                Arrow a = (Arrow) node;
-                
-            } else if(node.toString().contains("coverPane")) {
-
+            if(node.toString().contains("coverPane")) {
+                markPane(node);
             }
-            System.out.println(node);
             markedNodes.add(node);
-            System.out.println(markedNodes.size());
         } else {
-            removeMarkedNode(node);
+            System.out.println("HERE");
+            if(node.toString().contains("coverPane")) {
+                removeMarkedNode(node, "coverPane");
+            }
         }
     }
 
-    public static void removeMarkedNode(Node node) {
+    private static void markArrow(Arrow a) {
+        a.setMarked();
+    }
+
+    private static void unmarkArrow(Arrow a) {
+        a.removeMarked();
+    }
+
+    private static void markPane(Node node) {
+        App.getScenarios().forEach((t) -> {
+            if(t.getDragableScenarioController().getCoverPane() == node) {
+                t.getDragableScenarioController().setMarked();
+                App.getDragDropController().getMarkedPaneScenarios().add(t);
+            }
+        });
+    }
+
+    private static void unmarkPane(Node node) {
+        App.getScenarios().forEach((t) -> {
+            if(t.getDragableScenarioController().getCoverPane() == node) {
+                t.getDragableScenarioController().removeMarked();
+                App.getDragDropController().getMarkedPaneScenarios().remove(t);
+            }
+        });
+    }
+
+    public static void removeMarkedNode(Node node, String d) {
         markedNodes.remove(node);
-        System.out.println(markedNodes.size());
+        if(d.equals("coverPane")) {
+            unmarkPane(node);
+        }
     }
 
     public static void clearMarkedNodes() {
+        markedNodes.forEach((t) -> {
+            if(t.toString().contains("Line") || t.toString().contains("Circle")) {
+                unmarkArrow((Arrow) t);
+            } else if(t.toString().contains("coverPane")) {
+                unmarkPane(t);
+            }
+        });
         markedNodes.clear();
-        System.out.println(markedNodes.size());
     }
 
     public static Scenario findScenario(AnchorPane pane) {
@@ -143,7 +178,7 @@ public class App extends Application {
         return mouseController;
     }
 
-    public ShortcutController getShortcutController() {
+    public static ShortcutController getShortcutController() {
         return shortcutController;
     }
 
