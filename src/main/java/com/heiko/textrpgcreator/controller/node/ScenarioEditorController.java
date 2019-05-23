@@ -42,6 +42,8 @@ public class ScenarioEditorController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         App.setScenarioEditorController(this);
         scenarioTitle.requestFocus();
+        scenarioText.setStyle("-fx-text-fill: white;");
+        scenarioTitle.setStyle("-fx-text-fill: white;");
     }
 
     public void openScenarioEditor(Scenario scenario) {

@@ -66,9 +66,9 @@ public class Arrow extends Line {
     public void removeMarked() {
         if(hasText) {
             if(isGreen) {
-                setColor(Color.GREEN);
+                setColor(colorWithText1);
             } else {
-                setColor(Color.YELLOW);
+                setColor(colorWithText2);
             }
         } else {
             setColor(Color.BLACK);

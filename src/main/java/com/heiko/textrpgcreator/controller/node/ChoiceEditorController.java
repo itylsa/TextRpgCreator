@@ -40,6 +40,7 @@ public class ChoiceEditorController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         App.setChoiceEditorController(this);
         choiceText.requestFocus();
+        choiceText.setStyle("-fx-text-fill: white;");
     }
 
     public void openChoiceEditor(Choice choice) {
