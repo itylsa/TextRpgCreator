@@ -6,7 +6,6 @@
 package com.heiko.textrpgcreator.controller.ui;
 
 import com.heiko.textrpgcreator.App;
-import com.heiko.textrpgcreator.controller.node.DragableScenarioController;
 import com.heiko.textrpgcreator.scenario.Arrow;
 import com.heiko.textrpgcreator.scenario.Scenario;
 import java.util.ArrayList;
@@ -211,7 +210,6 @@ public class DragDropController {
                     targetPane = (AnchorPane) e.getGestureTarget();
                 }
 
-                System.out.println(e.getTarget());
                 if(targetPane != null && !App.arrowAllreadyExists(currentPane, targetPane) && currentPane.getChildren().get(1) != e.getTarget()) {
                     whichSide(currentPane, targetPane);
                     new Arrow(currentPane, targetPane, startPoint.getX(), startPoint.getY(), endPoint.getX(), endPoint.getY());

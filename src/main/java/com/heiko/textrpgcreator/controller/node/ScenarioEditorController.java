@@ -58,6 +58,7 @@ public class ScenarioEditorController implements Initializable {
         scenarioTitle.setText("");
         scenarioText.setText("");
         App.setCurrentEdit(null);
+        App.closeEditor();
     }
 
     public Parent getPane() {

@@ -26,7 +26,7 @@ public class Arrow extends Line {
 
     private Circle circle;
 
-    private double radius = 15;
+    private double radius = 20;
 
     private double width = 8;
 

@@ -35,6 +35,10 @@ public class ShortcutController {
             if(e.getCode().toString().equals("A") && isControlPressed) {
                 App.markAllNodes();
             }
+            if(e.getCode().toString().equals("DELETE")) {
+                App.deleteMarkedScenarios();
+                e.consume();
+            }
         }
     };
 

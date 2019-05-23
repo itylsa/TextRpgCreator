@@ -2,6 +2,7 @@ package com.heiko.textrpgcreator;
 
 import com.heiko.textrpgcreator.controller.node.ChoiceEditorController;
 import com.heiko.textrpgcreator.controller.node.Controller;
+import com.heiko.textrpgcreator.controller.node.DeleteChoiceController;
 import com.heiko.textrpgcreator.controller.node.DragableScenarioController;
 import com.heiko.textrpgcreator.controller.node.ScenarioEditorController;
 import com.heiko.textrpgcreator.controller.node.WindowController;
@@ -57,6 +58,18 @@ public class App extends Application {
     private static Stage editorStage;
 
     private static Scene editorScene;
+
+    private static Stage choiceStage;
+
+    private static Scene choiceScene;
+
+    private static List<Scenario> scenariosToDelete = new ArrayList<>();
+
+    private static List<Choice> choicesToDelete = new ArrayList<>();
+
+    private static boolean readyForDelete = false;
+    
+    private static DeleteChoiceController deleteChoiceController;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -136,6 +149,60 @@ public class App extends Application {
         });
     }
 
+    public static void deleteMarkedScenarios() {
+        if(!readyForDelete) {
+            markedNodes.forEach((n) -> {
+                if(n.toString().contains("coverPane")) {
+                    scenariosToDelete.add(findScenario((AnchorPane) n.getParent()));
+                }
+                deleteScenarios();
+                openDeleteChoice("DeleteChoice");
+            });
+        } else {
+            deleteScenarios();
+            markedNodes.clear();
+            scenariosToDelete.clear();
+            choicesToDelete.clear();
+            readyForDelete = false;
+        }
+    }
+
+    private static void deleteScenarios() {
+        scenariosToDelete.forEach((s) -> {
+            deleteScenario(s);
+        });
+    }
+
+    private static void deleteScenario(Scenario s) {
+        if(!readyForDelete) {
+            s.getIncomingChoices().forEach((c) -> {
+                choicesToDelete.add(c);
+            });
+            s.getOutgoingChoices().forEach((c) -> {
+                choicesToDelete.add(c);
+            });
+        } else {
+            scenariosToDelete.forEach((sc) -> {
+                windowController.getScalingPane().getChildren().remove(sc.getDragableScenarioController().getAnchorParentPane());
+                sc = null;
+            });
+            choicesToDelete.forEach((c) -> {
+                deleteArrow(c.getChoiceArrow());
+            });
+        }
+    }
+
+    private static void deleteArrow(Arrow a) {
+        windowController.getScalingPane().getChildren().remove(a.getLine());
+        windowController.getScalingPane().getChildren().remove(a.getCircle());
+        a = null;
+    }
+
+    public static void clearScenariosToDelete() {
+        scenariosToDelete.clear();
+        choicesToDelete.clear();
+    }
+
     public static Scenario findScenario(AnchorPane pane) {
         scenarios.forEach((t) -> {
             if(t.getDragableScenarioController().getAnchorParentPane() == pane) {
@@ -211,7 +278,6 @@ public class App extends Application {
     }
 
     public static void openEditor(String fxml, Scenario scenario, Choice choice) {
-        System.out.println(fxml);
         editorStage = new Stage();
         editorScene = new Scene(loadFXML(fxml));
         editorScene.getStylesheets().clear();
@@ -234,6 +300,26 @@ public class App extends Application {
 
     public static void closeEditor() {
         editorStage.close();
+    }
+    
+    public static void openDeleteChoice(String fxml) {
+        choiceStage = new Stage();
+        choiceScene = new Scene(loadFXML(fxml));
+        choiceScene.getStylesheets().clear();
+        choiceScene.getStylesheets().add(App.class.getResource("MainCSS.css").toExternalForm());
+        choiceStage.setScene(choiceScene);
+        choiceStage.setResizable(false);
+        if(fxml.equals("DeleteChoice")) {
+            deleteChoiceController.openDeleteChoice();
+            choiceStage.setOnCloseRequest((e) -> {
+                deleteChoiceController.closeDeleteChoice();
+            });
+        }
+        choiceStage.show();
+    }
+
+    public static void closeDeleteChoice() {
+        choiceStage.close();
     }
 
     public static void main(String[] args) {
@@ -314,5 +400,29 @@ public class App extends Application {
 
     public static void setCurrentChoice(Choice currentChoice) {
         App.currentChoice = currentChoice;
+    }
+
+    public static boolean isReadyForDelete() {
+        return readyForDelete;
+    }
+
+    public static void setReadyForDelete(boolean readyForDelete) {
+        App.readyForDelete = readyForDelete;
+    }
+
+    public static List<Scenario> getScenariosToDelete() {
+        return scenariosToDelete;
+    }
+
+    public static DeleteChoiceController getDeleteChoiceController() {
+        return deleteChoiceController;
+    }
+
+    public static void setDeleteChoiceController(DeleteChoiceController deleteChoiceController) {
+        App.deleteChoiceController = deleteChoiceController;
+    }
+
+    public static List<Choice> getChoicesToDelete() {
+        return choicesToDelete;
     }
 }
