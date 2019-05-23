@@ -68,7 +68,7 @@ public class App extends Application {
     private static List<Choice> choicesToDelete = new ArrayList<>();
 
     private static boolean readyForDelete = false;
-    
+
     private static DeleteChoiceController deleteChoiceController;
 
     @Override
@@ -155,9 +155,9 @@ public class App extends Application {
                 if(n.toString().contains("coverPane")) {
                     scenariosToDelete.add(findScenario((AnchorPane) n.getParent()));
                 }
-                deleteScenarios();
-                openDeleteChoice("DeleteChoice");
             });
+            deleteScenarios();
+            openDeleteChoice("DeleteChoice");
         } else {
             deleteScenarios();
             markedNodes.clear();
@@ -301,7 +301,7 @@ public class App extends Application {
     public static void closeEditor() {
         editorStage.close();
     }
-    
+
     public static void openDeleteChoice(String fxml) {
         choiceStage = new Stage();
         choiceScene = new Scene(loadFXML(fxml));
@@ -424,5 +424,21 @@ public class App extends Application {
 
     public static List<Choice> getChoicesToDelete() {
         return choicesToDelete;
+    }
+
+    public static Stage getEditorStage() {
+        return editorStage;
+    }
+
+    public static Scene getEditorScene() {
+        return editorScene;
+    }
+
+    public static Stage getChoiceStage() {
+        return choiceStage;
+    }
+
+    public static Scene getChoiceScene() {
+        return choiceScene;
     }
 }

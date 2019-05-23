@@ -42,24 +42,23 @@ public class DeleteChoiceController implements Initializable {
     }
 
     public void closeDeleteChoice() {
-//        scenario.setTitle(scenarioTitle.getText());
-//        scenario.setBody(scenarioText.getText());
-//        scenario.getDragableScenarioController().setBodyAndTitle(scenarioTitle.getText(), scenarioText.getText());
-//        scenario = null;
-//        scenarioTitle.setText("");
-//        scenarioText.setText("");
         App.setCurrentEdit(null);
         App.closeDeleteChoice();
     }
 
     @FXML
     private void doYes() {
-        System.out.println("yes");
+        App.setReadyForDelete(true);
+        App.deleteMarkedScenarios();
+        App.closeDeleteChoice();
     }
 
     @FXML
     private void doNo() {
-        System.out.println("no");
+        App.getScenariosToDelete().clear();
+        App.getChoicesToDelete().clear();
+        App.setReadyForDelete(false);
+        App.closeDeleteChoice();
     }
 
     public AnchorPane getAnchorParentPane() {
