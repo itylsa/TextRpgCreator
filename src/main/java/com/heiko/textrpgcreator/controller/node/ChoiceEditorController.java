@@ -49,12 +49,29 @@ public class ChoiceEditorController implements Initializable {
 
     public void closeChoiceEditor() {
         choice.setText(choiceText.getText());
-        if(!choiceText.getText().equals("")) {
-            choice.getChoiceArrow().setColor(Color.GREEN);
+        boolean bothWays = false;
+        Choice target = null;
+        for(Choice c : choice.getEndScenario().getOutgoingChoices()) {
+            if(choice.getEndScenario() == c.getStartScenario()) {
+                target = c;
+                bothWays = true;
+            }
+        }
+        if(!choiceText.getText().equals("") && !bothWays) {
+            choice.getChoiceArrow().setColor(choice.getChoiceArrow().getColorWithText1());
+            choice.getChoiceArrow().setHasText(true);
+            choice.getChoiceArrow().setIsGreen(true);
+        } else if(!choiceText.getText().equals("") && bothWays && !target.getChoiceArrow().isIsGreen()) {
+            choice.getChoiceArrow().setColor(choice.getChoiceArrow().getColorWithText1());
+            choice.getChoiceArrow().setHasText(true);
+            choice.getChoiceArrow().setIsGreen(true);
+        } else if(!choiceText.getText().equals("") && bothWays && target.getChoiceArrow().isIsGreen()) {
+            choice.getChoiceArrow().setColor(choice.getChoiceArrow().getColorWithText2());
             choice.getChoiceArrow().setHasText(true);
         } else {
             choice.getChoiceArrow().setColor(Color.BLACK);
             choice.getChoiceArrow().setHasText(false);
+            choice.getChoiceArrow().setIsGreen(false);
         }
         choice = null;
         choiceText.setText("");

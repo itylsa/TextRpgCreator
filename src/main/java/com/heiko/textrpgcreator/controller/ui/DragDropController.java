@@ -213,7 +213,7 @@ public class DragDropController {
                 if(targetPane != null && !App.arrowAllreadyExists(currentPane, targetPane) && currentPane.getChildren().get(1) != e.getTarget()) {
                     whichSide(currentPane, targetPane);
                     new Arrow(currentPane, targetPane, startPoint.getX(), startPoint.getY(), endPoint.getX(), endPoint.getY());
-                } else if(currentPane != e.getSource()) {
+                } else if(currentPane.getChildren().get(1) == e.getTarget()) {
                     System.out.println("Cant go on itself");
                 } else {
                     App.setArrowExists(false);

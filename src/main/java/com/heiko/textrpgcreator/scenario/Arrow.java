@@ -36,7 +36,13 @@ public class Arrow extends Line {
 
     private Color color = Color.BLACK;
 
+    private Color colorWithText1 = Color.GREEN;
+
+    private Color colorWithText2 = Color.YELLOW;
+
     private boolean hasText = false;
+
+    private boolean isGreen = false;
 
     public Arrow(AnchorPane startPane, AnchorPane endPane, double startX, double startY, double endX, double endY) {
         line = new Line(startX, startY, endX, endY);
@@ -59,7 +65,11 @@ public class Arrow extends Line {
 
     public void removeMarked() {
         if(hasText) {
-            setColor(Color.GREEN);
+            if(isGreen) {
+                setColor(Color.GREEN);
+            } else {
+                setColor(Color.YELLOW);
+            }
         } else {
             setColor(Color.BLACK);
         }
@@ -156,5 +166,29 @@ public class Arrow extends Line {
 
     public void setHasText(boolean hasText) {
         this.hasText = hasText;
+    }
+
+    public Color getColorWithText1() {
+        return colorWithText1;
+    }
+
+    public void setColorWithText1(Color colorWithText1) {
+        this.colorWithText1 = colorWithText1;
+    }
+
+    public Color getColorWithText2() {
+        return colorWithText2;
+    }
+
+    public void setColorWithText2(Color colorWithText2) {
+        this.colorWithText2 = colorWithText2;
+    }
+
+    public boolean isIsGreen() {
+        return isGreen;
+    }
+
+    public void setIsGreen(boolean isGreen) {
+        this.isGreen = isGreen;
     }
 }
