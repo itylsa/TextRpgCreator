@@ -11,6 +11,8 @@ package com.heiko.textrpgcreator.scenario;
  */
 public class Choice {
 
+    private int id;
+
     private String text;
 
     private Scenario startScenario;
@@ -19,7 +21,8 @@ public class Choice {
 
     private Arrow choiceArrow;
 
-    public Choice(String text, Scenario startScenario, Scenario endScenario, Arrow choiceArrow) {
+    public Choice(int id, String text, Scenario startScenario, Scenario endScenario, Arrow choiceArrow) {
+        this.id = id;
         this.text = text;
         this.startScenario = startScenario;
         this.endScenario = endScenario;
@@ -58,4 +61,11 @@ public class Choice {
         this.choiceArrow = choiceArrow;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }

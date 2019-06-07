@@ -15,7 +15,9 @@ import java.util.List;
  */
 public class Scenario {
 
-    private String title;
+    private int id;
+
+    private String tags;
 
     private String body;
 
@@ -25,19 +27,20 @@ public class Scenario {
 
     private DragableScenarioController dragableScenarioController;
 
-    public Scenario(String title, String body, DragableScenarioController dragableScenarioController) {
-        this.title = title;
+    public Scenario(int id, String title, String body, DragableScenarioController dragableScenarioController) {
+        this.id = id;
+        this.tags = title;
         this.body = body;
         this.dragableScenarioController = dragableScenarioController;
     }
 
-    public String getTitle() {
-        return title;
+    public String getTags() {
+        return tags;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-        dragableScenarioController.getTextTitle().setText(title);
+    public void setTags(String tags) {
+        this.tags = tags;
+        dragableScenarioController.getTextTitle().setText(tags);
     }
 
     public String getBody() {
@@ -67,5 +70,13 @@ public class Scenario {
 
     public List<Choice> getIncomingChoices() {
         return incomingChoices;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

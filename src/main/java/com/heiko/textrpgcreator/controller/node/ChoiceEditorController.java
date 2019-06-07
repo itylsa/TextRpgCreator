@@ -77,6 +77,7 @@ public class ChoiceEditorController implements Initializable {
         choice = null;
         choiceText.setText("");
         App.setCurrentChoice(null);
+        App.closeEditor();
     }
 
     public Parent getPane() {

@@ -23,6 +23,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * JavaFX App
@@ -42,6 +43,8 @@ public class App extends Application {
     private static MouseController mouseController = new MouseController();
 
     private static DragDropController dragDropController = new DragDropController();
+
+    private static FileController fileController = new FileController();
 
     private static Scenario currentEdit;
 
@@ -70,6 +73,8 @@ public class App extends Application {
     private static boolean readyForDelete = false;
 
     private static DeleteChoiceController deleteChoiceController;
+
+    private static int highestId = 0;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -182,12 +187,15 @@ public class App extends Application {
                 choicesToDelete.add(c);
             });
         } else {
-            scenariosToDelete.forEach((sc) -> {
-                windowController.getScalingPane().getChildren().remove(sc.getDragableScenarioController().getAnchorParentPane());
-                sc = null;
-            });
             choicesToDelete.forEach((c) -> {
                 deleteArrow(c.getChoiceArrow());
+                c.getStartScenario().getOutgoingChoices().remove(c);
+                c.getEndScenario().getIncomingChoices().remove(c);
+            });
+            scenariosToDelete.forEach((sc) -> {
+                windowController.getScalingPane().getChildren().remove(sc.getDragableScenarioController().getAnchorParentPane());
+                scenarios.remove(sc);
+                sc = null;
             });
         }
     }
@@ -278,8 +286,12 @@ public class App extends Application {
     }
 
     public static void openEditor(String fxml, Scenario scenario, Choice choice) {
+        if(editorStage != null) {
+            App.getEditorStage().fireEvent(new WindowEvent(App.getEditorStage(), WindowEvent.WINDOW_CLOSE_REQUEST));
+        }
         editorStage = new Stage();
         editorScene = new Scene(loadFXML(fxml));
+        editorScene.setOnKeyPressed(shortcutController.getEscPressed());
         editorScene.getStylesheets().clear();
         editorScene.getStylesheets().add(App.class.getResource("MainCSS.css").toExternalForm());
         editorStage.setScene(editorScene);
@@ -300,6 +312,7 @@ public class App extends Application {
 
     public static void closeEditor() {
         editorStage.close();
+        editorStage = null;
     }
 
     public static void openDeleteChoice(String fxml) {
@@ -320,6 +333,7 @@ public class App extends Application {
 
     public static void closeDeleteChoice() {
         choiceStage.close();
+        choiceStage = null;
     }
 
     public static void main(String[] args) {
@@ -440,5 +454,17 @@ public class App extends Application {
 
     public static Scene getChoiceScene() {
         return choiceScene;
+    }
+
+    public static FileController getFileController() {
+        return fileController;
+    }
+
+    public static int getHighestId() {
+        return highestId;
+    }
+
+    public static void setHighestId(int highestId) {
+        App.highestId = highestId;
     }
 }

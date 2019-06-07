@@ -39,7 +39,7 @@ public class WindowController extends Controller implements Initializable {
     private Label label3;
     @FXML
     private Label label4;
-    
+
     private double size = 100000;
 
     @Override
@@ -55,7 +55,8 @@ public class WindowController extends Controller implements Initializable {
         DragableScenarioController controller = (DragableScenarioController) App.loadFXMLController("DragableScenario");
         controller.setPosition(x, y);
         if(scenario == null) {
-            App.getScenarios().add(new Scenario("", "", controller));
+            App.getScenarios().add(new Scenario(App.getHighestId() + 1, controller.getTextTitle().getText(), controller.getTextBody().getText(), controller));
+            App.setHighestId(App.getHighestId() + 1);
         } else {
             scenario.setDragableScenarioController(controller);
             App.getScenarios().add(scenario);

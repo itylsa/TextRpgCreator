@@ -8,8 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane id="AnchorPane" fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="800.0" style="-fx-background-color: grey;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="com.heiko.textrpgcreator.controller.node.ScenarioEditorController">
+<AnchorPane id="AnchorPane" fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="800.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.heiko.textrpgcreator.controller.node.ScenarioEditorController">
    <children>
       <VBox fx:id="box" alignment="TOP_CENTER" prefHeight="1000.0" prefWidth="800.0" spacing="5.0">
          <children>
@@ -18,13 +17,13 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextArea id="scenarioTitle" fx:id="scenarioTitle" prefHeight="100.0" prefWidth="800.0" />
+            <TextArea id="scenarioTitle" fx:id="scenarioTitle" prefHeight="100.0" prefWidth="800.0" wrapText="true" />
             <Label fx:id="textLabel" text="Scenario Text" textFill="#00feff">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextArea fx:id="scenarioText" prefHeight="840.0" prefWidth="800.0" />
+            <TextArea fx:id="scenarioText" prefHeight="840.0" prefWidth="800.0" wrapText="true" />
          </children>
          <padding>
             <Insets top="5.0" />

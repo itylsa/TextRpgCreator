@@ -32,8 +32,12 @@ public class DragableScenarioController extends Controller implements Initializa
     private TextArea textBody;
     @FXML
     private Pane coverPane;
-    
+
     private boolean marked = false;
+
+    private int titleLength = 11;
+
+    private int bodyLength = 65;
 
     private final BooleanProperty firstTime = new SimpleBooleanProperty(true);
 
@@ -62,18 +66,10 @@ public class DragableScenarioController extends Controller implements Initializa
     }
 
     public void setTextInBody(String text) {
-        if(text.length() > 65) {
-            text = text.substring(0, 65);
-            text = text + " ...";
-        }
         textBody.setText(text);
     }
 
     public void setTextInTitle(String text) {
-        if(text.length() > 11) {
-            text = text.substring(0, 11);
-            text = text + " ...";
-        }
         textTitle.setText(text);
     }
 

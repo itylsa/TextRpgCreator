@@ -53,8 +53,9 @@ public class Arrow extends Line {
         App.getWindowController().getScalingPane().getChildren().add(circle);
         Scenario start = App.findScenario(startPane);
         Scenario end = App.findScenario(endPane);
-        start.getOutgoingChoices().add(new Choice("", start, end, this));
-        end.getIncomingChoices().add(new Choice("", start, end, this));
+        Choice choice = new Choice(end.getId(), "", start, end, this);
+        start.getOutgoingChoices().add(choice);
+        end.getIncomingChoices().add(choice);
         this.startPane = startPane;
         this.endPane = endPane;
     }

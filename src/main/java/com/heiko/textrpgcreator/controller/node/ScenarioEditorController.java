@@ -48,12 +48,12 @@ public class ScenarioEditorController implements Initializable {
 
     public void openScenarioEditor(Scenario scenario) {
         this.scenario = scenario;
-        scenarioTitle.setText(scenario.getTitle());
+        scenarioTitle.setText(scenario.getTags());
         scenarioText.setText(scenario.getBody());
     }
 
     public void closeScenarioEditor() {
-        scenario.setTitle(scenarioTitle.getText());
+        scenario.setTags(scenarioTitle.getText());
         scenario.setBody(scenarioText.getText());
         scenario.getDragableScenarioController().setBodyAndTitle(scenarioTitle.getText(), scenarioText.getText());
         scenario = null;
