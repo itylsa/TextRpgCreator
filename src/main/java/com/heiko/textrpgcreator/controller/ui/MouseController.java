@@ -42,7 +42,7 @@ public class MouseController {
             }
             if(e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2 && (e.getTarget().toString().contains("Line") || e.getTarget().toString().contains("Circle"))) {
                 Node n = (Node) e.getTarget();
-                Choice choice = App.findScenario(n);
+                Choice choice = App.findChoice(n);
                 App.openEditor("ChoiceEditor", null, choice);
             }
             if(e.getButton() == MouseButton.PRIMARY && !e.getTarget().toString().contains("scalingPane")) {

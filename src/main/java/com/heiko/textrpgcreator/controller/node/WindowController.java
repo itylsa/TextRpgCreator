@@ -6,6 +6,8 @@
 package com.heiko.textrpgcreator.controller.node;
 
 import com.heiko.textrpgcreator.App;
+import com.heiko.textrpgcreator.scenario.Arrow;
+import com.heiko.textrpgcreator.scenario.Choice;
 import com.heiko.textrpgcreator.scenario.Scenario;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -60,8 +62,25 @@ public class WindowController extends Controller implements Initializable {
         } else {
             scenario.setDragableScenarioController(controller);
             App.getScenarios().add(scenario);
+            controller.setBodyAndTags(scenario.getTags(), scenario.getBody());
         }
         scalingPane.getChildren().add(controller.getPane());
+    }
+
+    public void addArrow(Scenario start, Scenario end, int id, String tags, String text) {
+        App.getDragDropController().whichSide(start.getDragableScenarioController().getAnchorParentPane(), end.getDragableScenarioController().getAnchorParentPane());
+        Arrow arrow = new Arrow(
+                start.getDragableScenarioController().getAnchorParentPane(),
+                end.getDragableScenarioController().getAnchorParentPane(),
+                App.getDragDropController().getStartPoint().getX(),
+                App.getDragDropController().getStartPoint().getY(),
+                App.getDragDropController().getEndPoint().getX(),
+                App.getDragDropController().getEndPoint().getY());
+        Choice choice = arrow.getChoice();
+        choice.setId(id);
+        choice.setTags(tags);
+        choice.setText(text);
+        arrow.colorArrow();
     }
 
     private void labelAreaIncrease() {

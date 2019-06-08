@@ -246,7 +246,7 @@ public class DragDropController {
         };
     }
 
-    private void whichSide(AnchorPane currentPane, AnchorPane targetPane) {
+    public void whichSide(AnchorPane currentPane, AnchorPane targetPane) {
         double differenceX = currentPane.getLayoutX() - targetPane.getLayoutX();
         double differenceY = currentPane.getLayoutY() - targetPane.getLayoutY();
         if(Math.abs(differenceX) > Math.abs(differenceY)) {
@@ -294,5 +294,13 @@ public class DragDropController {
 
     public List<Scenario> getMarkedPaneScenarios() {
         return markedPaneScenarios;
+    }
+
+    public Point2D getStartPoint() {
+        return startPoint;
+    }
+
+    public Point2D getEndPoint() {
+        return endPoint;
     }
 }

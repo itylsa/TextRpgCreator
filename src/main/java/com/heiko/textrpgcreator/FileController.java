@@ -10,6 +10,8 @@ import com.heiko.textrpgcreator.scenario.Scenario;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jdom2.Document;
@@ -69,6 +71,9 @@ public class FileController {
                         Element choiceId = new Element("Id").setText(String.valueOf(c.getId()));
                         choice.addContent(choiceId);
 
+                        Element choiceTags = new Element("Tags").setText(c.getTags());
+                        choice.addContent(choiceTags);
+
                         Element choiceText = new Element("Text").setText(c.getText());
                         choice.addContent(choiceText);
                     }
@@ -91,11 +96,35 @@ public class FileController {
 
     public void loadProgress(File file) {
         //TODO
+        App.clearAll();
         SAXBuilder builder = new SAXBuilder();
         try {
             Document document = (Document) builder.build(file);
             Element adventure = document.getRootElement();
             App.setAdventureName(adventure.getChildText("Name"));
+            App.setHighestId(Integer.parseInt(adventure.getChildText("HighestId")));
+
+            List<Element> scenarios = adventure.getChild("Scenarios").getChildren();
+            List<Element> choices = new ArrayList<>();
+            for(Element s : scenarios) {
+                Scenario scenario = new Scenario(Integer.valueOf(s.getChildText("Id")), s.getChildText("Tags"), s.getChildText("Text"), null);
+                App.setHighestId(scenario.getId());
+
+                App.getWindowController().addDragableScenario(
+                        Double.valueOf(s.getChild("Position").getChildText("X")),
+                        Double.valueOf(s.getChild("Position").getChildText("Y")),
+                        scenario);
+
+                for(Element choice : s.getChild("Choices").getChildren("Choice")) {
+                    choices.add(choice);
+                }
+            }
+            for(Element c : choices) {
+                Scenario start = App.findScenario(Integer.valueOf(c.getParentElement().getParentElement().getChildText("Id")));
+                Scenario end = App.findScenario(Integer.valueOf(c.getChildText("Id")));
+                App.getWindowController().addArrow(start, end, Integer.valueOf(c.getChildText("Id")), c.getChildText("Tags"), c.getChildText("Text"));
+            }
+
         } catch(JDOMException ex) {
             Logger.getLogger(FileController.class.getName()).log(Level.SEVERE, null, ex);
         } catch(IOException ex) {

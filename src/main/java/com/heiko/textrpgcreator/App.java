@@ -31,7 +31,7 @@ import javafx.stage.WindowEvent;
 public class App extends Application {
 
     private static Scene scene;
-    
+
     private static Stage stage;
 
     private static WindowController windowController;
@@ -79,8 +79,10 @@ public class App extends Application {
     private static int highestId = 0;
 
     private static String adventureName = "";
-    
+
     private static String initialPath = "";
+    
+    private static String title = "Adventure Editor";
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -88,7 +90,7 @@ public class App extends Application {
         scene = new Scene(loadFXML("Window"));
         scene.getStylesheets().add(App.class.getResource("MainCSS.css").toExternalForm());
         this.stage.setScene(scene);
-        this.stage.setTitle("Adventure Editor");
+        this.stage.setTitle(title);
         addKeyListeners();
         setMouseListeners();
         this.stage.show();
@@ -229,7 +231,17 @@ public class App extends Application {
         return currentEdit;
     }
 
-    public static Choice findScenario(Node node) {
+    public static Scenario findScenario(int id) {
+        Scenario scenario = null;
+        for(Scenario s : scenarios) {
+            if(s.getId() == id) {
+                scenario = s;
+            }
+        }
+        return scenario;
+    }
+
+    public static Choice findChoice(Node node) {
         App.getScenarios().forEach((t) -> {
             t.getIncomingChoices().forEach((b) -> {
                 if(b.getChoiceArrow().getLine() == node || b.getChoiceArrow().getCircle() == node) {
@@ -345,6 +357,11 @@ public class App extends Application {
     public static void closeDeleteChoice() {
         choiceStage.close();
         choiceStage = null;
+    }
+    
+    public static void clearAll() {
+        scenarios.clear();
+        windowController.getScalingPane().getChildren().clear();
     }
 
     public static void main(String[] args) {
@@ -485,7 +502,7 @@ public class App extends Application {
 
     public static void setAdventureName(String adventureName) {
         App.adventureName = adventureName;
-        stage.setTitle(stage.getTitle() + " - " + adventureName);
+        stage.setTitle(title + " - " + adventureName);
     }
 
     public static Stage getStage() {

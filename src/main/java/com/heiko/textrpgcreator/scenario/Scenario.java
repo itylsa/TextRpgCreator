@@ -56,10 +56,6 @@ public class Scenario {
         return outgoingChoices;
     }
 
-    public void setChoices(List<Choice> choices) {
-        this.outgoingChoices = choices;
-    }
-
     public DragableScenarioController getDragableScenarioController() {
         return dragableScenarioController;
     }

@@ -48,11 +48,13 @@ public class ChoiceEditorController implements Initializable {
 
     public void openChoiceEditor(Choice choice) {
         this.choice = choice;
+        choiceTags.setText(choice.getTags());
         choiceText.setText(choice.getText());
     }
 
     public void closeChoiceEditor() {
         choice.setText(choiceText.getText());
+        choice.setTags(choiceTags.getText());
         boolean bothWays = false;
         Choice target = null;
         for(Choice c : choice.getEndScenario().getOutgoingChoices()) {

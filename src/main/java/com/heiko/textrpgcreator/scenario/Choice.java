@@ -13,6 +13,8 @@ public class Choice {
 
     private int id;
 
+    private String tags;
+
     private String text;
 
     private Scenario startScenario;
@@ -67,5 +69,13 @@ public class Choice {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
     }
 }

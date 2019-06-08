@@ -38,20 +38,26 @@ public class ShortcutController {
             //If control and s are pressed
             if(e.getCode().toString().equals("S") && isControlPressed) {
                 if(!App.getInitialPath().equals("")) {
-                    System.out.println(App.getInitialPath().substring(0, App.getInitialPath().lastIndexOf("\\")));
-                    fileChooser.setInitialDirectory(new File(App.getInitialPath().substring(0, App.getInitialPath().lastIndexOf("\\"))));
+                    fileChooser.setInitialDirectory(new File(App.getInitialPath()));
                 }
                 fileChooser.setTitle("Xml to save to");
                 File file = fileChooser.showSaveDialog(App.getStage());
                 if(file != null) {
-                    App.setAdventureName(file.getName().substring(0, file.getName().indexOf(".")));
+                    App.setInitialPath(file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf("\\")));
+                    App.getFileController().setInitialPath();
+                    App.setAdventureName(file.getName().substring(0, file.getName().lastIndexOf(".")));
                     App.getFileController().saveProgress(file);
                 }
             }
             if(e.getCode().toString().equals("L") && isControlPressed) {
+                if(!App.getInitialPath().equals("")) {
+                    fileChooser.setInitialDirectory(new File(App.getInitialPath()));
+                }
                 fileChooser.setTitle("Xml to load from");
                 File file = fileChooser.showOpenDialog(App.getStage());
                 if(file != null) {
+                    App.setInitialPath(file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf("\\")));
+                    App.getFileController().setInitialPath();
                     App.getFileController().loadProgress(file);
                 }
             }

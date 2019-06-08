@@ -34,6 +34,8 @@ public class Arrow extends Line {
 
     private AnchorPane endPane;
 
+    private Choice choice;
+
     private Color color = Color.BLACK;
 
     private Color colorWithText1 = Color.GREEN;
@@ -53,11 +55,38 @@ public class Arrow extends Line {
         App.getWindowController().getScalingPane().getChildren().add(circle);
         Scenario start = App.findScenario(startPane);
         Scenario end = App.findScenario(endPane);
-        Choice choice = new Choice(end.getId(), "", start, end, this);
+        choice = new Choice(end.getId(), "", start, end, this);
         start.getOutgoingChoices().add(choice);
         end.getIncomingChoices().add(choice);
         this.startPane = startPane;
         this.endPane = endPane;
+    }
+
+    public void colorArrow() {
+        boolean bothWays = false;
+        Choice target = null;
+        for(Choice c : choice.getEndScenario().getOutgoingChoices()) {
+            if(choice.getEndScenario() == c.getStartScenario()) {
+                target = c;
+                bothWays = true;
+            }
+        }
+        if(!choice.getText().equals("") && !bothWays) {
+            choice.getChoiceArrow().setColor(choice.getChoiceArrow().getColorWithText1());
+            choice.getChoiceArrow().setHasText(true);
+            choice.getChoiceArrow().setIsGreen(true);
+        } else if(!choice.getText().equals("") && bothWays && !target.getChoiceArrow().isIsGreen()) {
+            choice.getChoiceArrow().setColor(choice.getChoiceArrow().getColorWithText1());
+            choice.getChoiceArrow().setHasText(true);
+            choice.getChoiceArrow().setIsGreen(true);
+        } else if(!choice.getText().equals("") && bothWays && target.getChoiceArrow().isIsGreen()) {
+            choice.getChoiceArrow().setColor(choice.getChoiceArrow().getColorWithText2());
+            choice.getChoiceArrow().setHasText(true);
+        } else {
+            choice.getChoiceArrow().setColor(Color.BLACK);
+            choice.getChoiceArrow().setHasText(false);
+            choice.getChoiceArrow().setIsGreen(false);
+        }
     }
 
     public void setMarked() {
@@ -191,5 +220,9 @@ public class Arrow extends Line {
 
     public void setIsGreen(boolean isGreen) {
         this.isGreen = isGreen;
+    }
+
+    public Choice getChoice() {
+        return choice;
     }
 }
