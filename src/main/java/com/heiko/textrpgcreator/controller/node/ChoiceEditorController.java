@@ -32,6 +32,8 @@ public class ChoiceEditorController implements Initializable {
     @FXML
     private TextArea choiceText;
     @FXML
+    private TextArea choiceTags;
+    @FXML
     private Label textLabel;
 
     private Choice choice;
@@ -41,6 +43,7 @@ public class ChoiceEditorController implements Initializable {
         App.setChoiceEditorController(this);
         choiceText.requestFocus();
         choiceText.setStyle("-fx-text-fill: white;");
+        choiceTags.setStyle("-fx-text-fill: white;");
     }
 
     public void openChoiceEditor(Choice choice) {
@@ -102,5 +105,9 @@ public class ChoiceEditorController implements Initializable {
 
     public void setChoice(Choice choice) {
         this.choice = choice;
+    }
+
+    public TextArea getChoiceTags() {
+        return choiceTags;
     }
 }

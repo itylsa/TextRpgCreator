@@ -55,7 +55,7 @@ public class WindowController extends Controller implements Initializable {
         DragableScenarioController controller = (DragableScenarioController) App.loadFXMLController("DragableScenario");
         controller.setPosition(x, y);
         if(scenario == null) {
-            App.getScenarios().add(new Scenario(App.getHighestId() + 1, controller.getTextTitle().getText(), controller.getTextBody().getText(), controller));
+            App.getScenarios().add(new Scenario(App.getHighestId() + 1, controller.getTextTags().getText(), controller.getTextBody().getText(), controller));
             App.setHighestId(App.getHighestId() + 1);
         } else {
             scenario.setDragableScenarioController(controller);

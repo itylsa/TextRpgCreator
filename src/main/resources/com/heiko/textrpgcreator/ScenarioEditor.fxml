@@ -12,18 +12,18 @@
    <children>
       <VBox fx:id="box" alignment="TOP_CENTER" prefHeight="1000.0" prefWidth="800.0" spacing="5.0">
          <children>
-            <Label fx:id="titleLabel" text="Scenario Title" textFill="#00feff">
+            <Label fx:id="tagsLabel" text="Scenario Tags" textFill="#00feff">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextArea id="scenarioTitle" fx:id="scenarioTitle" prefHeight="100.0" prefWidth="800.0" wrapText="true" />
+            <TextArea id="scenarioTags" fx:id="scenarioTags" prefHeight="100.0" prefWidth="800.0" wrapText="true" />
             <Label fx:id="textLabel" text="Scenario Text" textFill="#00feff">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextArea fx:id="scenarioText" prefHeight="840.0" prefWidth="800.0" wrapText="true" />
+            <TextArea fx:id="scenarioText" prefHeight="900.0" prefWidth="800.0" wrapText="true" />
          </children>
          <padding>
             <Insets top="5.0" />

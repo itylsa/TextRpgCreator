@@ -27,17 +27,13 @@ public class DragableScenarioController extends Controller implements Initializa
     @FXML
     private Parent pane;
     @FXML
-    private TextArea textTitle;
+    private TextArea textTags;
     @FXML
     private TextArea textBody;
     @FXML
     private Pane coverPane;
 
     private boolean marked = false;
-
-    private int titleLength = 11;
-
-    private int bodyLength = 65;
 
     private final BooleanProperty firstTime = new SimpleBooleanProperty(true);
 
@@ -69,13 +65,13 @@ public class DragableScenarioController extends Controller implements Initializa
         textBody.setText(text);
     }
 
-    public void setTextInTitle(String text) {
-        textTitle.setText(text);
+    public void setTextInTags(String text) {
+        textTags.setText(text);
     }
 
-    public void setBodyAndTitle(String title, String body) {
+    public void setBodyAndTags(String tags, String body) {
         setTextInBody(body);
-        setTextInTitle(title);
+        setTextInTags(tags);
     }
 
     public void setPosition(double x, double y) {
@@ -84,7 +80,7 @@ public class DragableScenarioController extends Controller implements Initializa
     }
 
     private void removeFocus() {
-        textTitle.focusedProperty().addListener((observable, oldValue, newValue) -> {
+        textTags.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue && firstTime.get()) {
                 pane.requestFocus(); // Delegate the focus to container
                 firstTime.setValue(false); // Variable value changed for future references
@@ -100,8 +96,8 @@ public class DragableScenarioController extends Controller implements Initializa
         return (AnchorPane) pane;
     }
 
-    public TextArea getTextTitle() {
-        return textTitle;
+    public TextArea getTextTags() {
+        return textTags;
     }
 
     public TextArea getTextBody() {

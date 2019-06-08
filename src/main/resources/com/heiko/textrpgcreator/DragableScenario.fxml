@@ -11,8 +11,8 @@
    <children>
       <VBox fx:id="contentBox" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="130.0" prefWidth="100.0" style="-fx-border-color: green;">
          <children>
-            <TextArea id="textTitle" fx:id="textTitle" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="100.0" promptText="Title" wrapText="true" />
-            <TextArea id="textBody" fx:id="textBody" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="100.0" promptText="Text" text="PENIS" wrapText="true" VBox.vgrow="NEVER" />
+            <TextArea id="textTags" fx:id="textTags" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="100.0" promptText="Tags" wrapText="true" />
+            <TextArea id="textBody" fx:id="textBody" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="100.0" promptText="Text" wrapText="true" VBox.vgrow="NEVER" />
          </children>
       </VBox>
       <Pane fx:id="coverPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="130.0" prefWidth="100.0" style="-fx-border-color: black; -fx-border-width: 1px;" />

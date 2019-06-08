@@ -28,11 +28,11 @@ public class ScenarioEditorController implements Initializable {
     @FXML
     private VBox box;
     @FXML
-    private TextArea scenarioTitle;
+    private TextArea scenarioTags;
     @FXML
     private TextArea scenarioText;
     @FXML
-    private Label titleLabel;
+    private Label tagsLabel;
     @FXML
     private Label textLabel;
 
@@ -41,23 +41,23 @@ public class ScenarioEditorController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         App.setScenarioEditorController(this);
-        scenarioTitle.requestFocus();
+        scenarioTags.requestFocus();
         scenarioText.setStyle("-fx-text-fill: white;");
-        scenarioTitle.setStyle("-fx-text-fill: white;");
+        scenarioTags.setStyle("-fx-text-fill: white;");
     }
 
     public void openScenarioEditor(Scenario scenario) {
         this.scenario = scenario;
-        scenarioTitle.setText(scenario.getTags());
+        scenarioTags.setText(scenario.getTags());
         scenarioText.setText(scenario.getBody());
     }
 
     public void closeScenarioEditor() {
-        scenario.setTags(scenarioTitle.getText());
+        scenario.setTags(scenarioTags.getText());
         scenario.setBody(scenarioText.getText());
-        scenario.getDragableScenarioController().setBodyAndTitle(scenarioTitle.getText(), scenarioText.getText());
+        scenario.getDragableScenarioController().setBodyAndTags(scenarioTags.getText(), scenarioText.getText());
         scenario = null;
-        scenarioTitle.setText("");
+        scenarioTags.setText("");
         scenarioText.setText("");
         App.setCurrentEdit(null);
         App.closeEditor();
@@ -71,16 +71,16 @@ public class ScenarioEditorController implements Initializable {
         return box;
     }
 
-    public TextArea getScenarioTitle() {
-        return scenarioTitle;
+    public TextArea getScenarioTags() {
+        return scenarioTags;
     }
 
     public TextArea getScenarioText() {
         return scenarioText;
     }
 
-    public Label getTitleLabel() {
-        return titleLabel;
+    public Label getTagsLabel() {
+        return tagsLabel;
     }
 
     public Label getTextLabel() {

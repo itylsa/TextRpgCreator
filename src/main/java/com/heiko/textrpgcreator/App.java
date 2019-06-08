@@ -81,6 +81,7 @@ public class App extends Application {
         scene = new Scene(loadFXML("Window"));
         scene.getStylesheets().add(App.class.getResource("MainCSS.css").toExternalForm());
         stage.setScene(scene);
+        stage.setTitle("Adventure Editor");
         addKeyListeners();
         setMouseListeners();
         stage.show();
@@ -298,11 +299,13 @@ public class App extends Application {
         editorStage.setResizable(false);
         if(fxml.equals("ScenarioEditor")) {
             scenarioEditorController.openScenarioEditor(scenario);
+            editorStage.setTitle("Edit Scenario");
             editorStage.setOnCloseRequest(e -> {
                 scenarioEditorController.closeScenarioEditor();
             });
         } else {
             choiceEditorController.openChoiceEditor(choice);
+            editorStage.setTitle("Edit Choice");
             editorStage.setOnCloseRequest(e -> {
                 choiceEditorController.closeChoiceEditor();
             });

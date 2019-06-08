@@ -27,9 +27,9 @@ public class Scenario {
 
     private DragableScenarioController dragableScenarioController;
 
-    public Scenario(int id, String title, String body, DragableScenarioController dragableScenarioController) {
+    public Scenario(int id, String tags, String body, DragableScenarioController dragableScenarioController) {
         this.id = id;
-        this.tags = title;
+        this.tags = tags;
         this.body = body;
         this.dragableScenarioController = dragableScenarioController;
     }
@@ -40,7 +40,7 @@ public class Scenario {
 
     public void setTags(String tags) {
         this.tags = tags;
-        dragableScenarioController.getTextTitle().setText(tags);
+        dragableScenarioController.getTextTags().setText(tags);
     }
 
     public String getBody() {
