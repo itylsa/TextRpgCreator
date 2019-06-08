@@ -41,6 +41,8 @@ public class ShortcutController {
                     fileChooser.setInitialDirectory(new File(App.getInitialPath()));
                 }
                 fileChooser.setTitle("Xml to save to");
+                FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
+                fileChooser.getExtensionFilters().add(extFilter);
                 File file = fileChooser.showSaveDialog(App.getStage());
                 if(file != null) {
                     App.setInitialPath(file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf("\\")));
@@ -54,6 +56,8 @@ public class ShortcutController {
                     fileChooser.setInitialDirectory(new File(App.getInitialPath()));
                 }
                 fileChooser.setTitle("Xml to load from");
+                FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
+                fileChooser.getExtensionFilters().add(extFilter);
                 File file = fileChooser.showOpenDialog(App.getStage());
                 if(file != null) {
                     App.setInitialPath(file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf("\\")));
