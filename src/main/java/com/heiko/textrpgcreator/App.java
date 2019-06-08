@@ -31,6 +31,8 @@ import javafx.stage.WindowEvent;
 public class App extends Application {
 
     private static Scene scene;
+    
+    private static Stage stage;
 
     private static WindowController windowController;
 
@@ -76,15 +78,21 @@ public class App extends Application {
 
     private static int highestId = 0;
 
+    private static String adventureName = "";
+    
+    private static String initialPath = "";
+
     @Override
     public void start(Stage stage) throws IOException {
+        this.stage = stage;
         scene = new Scene(loadFXML("Window"));
         scene.getStylesheets().add(App.class.getResource("MainCSS.css").toExternalForm());
-        stage.setScene(scene);
-        stage.setTitle("Adventure Editor");
+        this.stage.setScene(scene);
+        this.stage.setTitle("Adventure Editor");
         addKeyListeners();
         setMouseListeners();
-        stage.show();
+        this.stage.show();
+        fileController.getInitialPath();
     }
 
     public static void addMarkedNode(Node node, boolean isShiftPressed) {
@@ -469,5 +477,26 @@ public class App extends Application {
 
     public static void setHighestId(int highestId) {
         App.highestId = highestId;
+    }
+
+    public static String getAdventureName() {
+        return adventureName;
+    }
+
+    public static void setAdventureName(String adventureName) {
+        App.adventureName = adventureName;
+        stage.setTitle(stage.getTitle() + " - " + adventureName);
+    }
+
+    public static Stage getStage() {
+        return stage;
+    }
+
+    public static String getInitialPath() {
+        return initialPath;
+    }
+
+    public static void setInitialPath(String initialPath) {
+        App.initialPath = initialPath;
     }
 }

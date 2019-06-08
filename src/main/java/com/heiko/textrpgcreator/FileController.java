@@ -14,6 +14,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jdom2.Document;
 import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
@@ -27,7 +29,7 @@ public class FileController {
         if(!file.exists()) {
             try {
                 Element adventure = new Element("Adventure");
-                adventure.addContent(new Element("Name").setText("TODO"));
+                adventure.addContent(new Element("Name").setText(App.getAdventureName()));
 
                 Element highestId = new Element("HighestId").setText(String.valueOf(App.getHighestId()));
                 adventure.addContent(highestId);
@@ -87,7 +89,59 @@ public class FileController {
         }
     }
 
-    public void loadProgress() {
+    public void loadProgress(File file) {
         //TODO
+        SAXBuilder builder = new SAXBuilder();
+        try {
+            Document document = (Document) builder.build(file);
+            Element adventure = document.getRootElement();
+            App.setAdventureName(adventure.getChildText("Name"));
+        } catch(JDOMException ex) {
+            Logger.getLogger(FileController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch(IOException ex) {
+            Logger.getLogger(FileController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void getInitialPath() {
+        if(!new File("Settings.xml").exists()) {
+            setInitialPath();
+        }
+        SAXBuilder builder = new SAXBuilder();
+        try {
+            Document document = (Document) builder.build("Settings.xml");
+            Element settings = document.getRootElement();
+            App.setInitialPath(settings.getChildText("InitialPath"));
+        } catch(JDOMException ex) {
+            Logger.getLogger(FileController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch(IOException ex) {
+            Logger.getLogger(FileController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void setInitialPath() {
+        SAXBuilder builder = new SAXBuilder();
+        try {
+            Document document;
+            if(new File("Settings.xml").exists()) {
+                document = (Document) builder.build("Settings.xml");
+                document.getRootElement().getChild("InitialPath").setText(App.getInitialPath());
+            } else {
+                Element settings = new Element("Settings");
+                document = new Document(settings);
+                settings.addContent(new Element("InitialPath").setText(App.getInitialPath()));
+            }
+
+            XMLOutputter xmlOutput = new XMLOutputter();
+
+            xmlOutput.setFormat(Format.getPrettyFormat());
+            FileOutputStream fos = new FileOutputStream("Settings.xml");
+            xmlOutput.output(document, fos);
+            fos.close();
+        } catch(IOException ex) {
+            Logger.getLogger(FileController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch(JDOMException ex) {
+            Logger.getLogger(FileController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

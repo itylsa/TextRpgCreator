@@ -10,6 +10,8 @@ import java.awt.Event;
 import java.io.File;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
@@ -22,6 +24,8 @@ public class ShortcutController {
 
     private boolean isShiftPressed = false;
 
+    private FileChooser fileChooser = new FileChooser();
+
     private EventHandler<KeyEvent> keyPressed = new EventHandler<KeyEvent>() {
         public void handle(KeyEvent e) {
             //If control is pressed
@@ -33,9 +37,23 @@ public class ShortcutController {
             }
             //If control and s are pressed
             if(e.getCode().toString().equals("S") && isControlPressed) {
-                System.out.println("SAVE");
-                App.getFileController().saveProgress(new File("C:\\Users\\eiko1\\Desktop\\TEST\\" + "testfile" + ".xml"));
-                //TODO
+                if(!App.getInitialPath().equals("")) {
+                    System.out.println(App.getInitialPath().substring(0, App.getInitialPath().lastIndexOf("\\")));
+                    fileChooser.setInitialDirectory(new File(App.getInitialPath().substring(0, App.getInitialPath().lastIndexOf("\\"))));
+                }
+                fileChooser.setTitle("Xml to save to");
+                File file = fileChooser.showSaveDialog(App.getStage());
+                if(file != null) {
+                    App.setAdventureName(file.getName().substring(0, file.getName().indexOf(".")));
+                    App.getFileController().saveProgress(file);
+                }
+            }
+            if(e.getCode().toString().equals("L") && isControlPressed) {
+                fileChooser.setTitle("Xml to load from");
+                File file = fileChooser.showOpenDialog(App.getStage());
+                if(file != null) {
+                    App.getFileController().loadProgress(file);
+                }
             }
             if(e.getCode().toString().equals("A") && isControlPressed) {
                 App.markAllNodes();
