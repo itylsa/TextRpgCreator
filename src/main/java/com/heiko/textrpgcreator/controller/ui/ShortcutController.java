@@ -6,6 +6,7 @@
 package com.heiko.textrpgcreator.controller.ui;
 
 import com.heiko.textrpgcreator.App;
+import static com.heiko.textrpgcreator.App.loadFXML;
 import java.awt.Event;
 import java.io.File;
 import javafx.event.EventHandler;
@@ -34,6 +35,13 @@ public class ShortcutController {
             }
             if(e.getCode().toString().equals("SHIFT")) {
                 isShiftPressed = true;
+            }
+            if(e.getCode().toString().equals("F1")) {
+                if(!App.getWindowController().getAnchorPane().getChildren().contains(App.getHelpWindow())) {
+                    App.getWindowController().getAnchorPane().getChildren().add(App.getHelpWindow());
+                } else {
+                    App.getWindowController().getAnchorPane().getChildren().remove(App.getHelpWindow());
+                }
             }
             //If control and s are pressed
             if(e.getCode().toString().equals("S") && isControlPressed) {

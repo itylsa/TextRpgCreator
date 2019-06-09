@@ -8,9 +8,8 @@
 <?import javafx.scene.layout.*?>
 
 
-<AnchorPane id="AnchorPane" fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: lightgrey;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="com.heiko.textrpgcreator.controller.node.HelpWindowController">
+<AnchorPane id="AnchorPane" fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: lightgrey;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="com.heiko.textrpgcreator.controller.node.HelpWindowController">
    <children>
-      <TextArea fx:id="text" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" wrapText="true" />
-      <Pane opacity="0.0" prefHeight="600.0" prefWidth="1000.0" />
+      <TextArea fx:id="text" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" wrapText="true" />
    </children>
 </AnchorPane>

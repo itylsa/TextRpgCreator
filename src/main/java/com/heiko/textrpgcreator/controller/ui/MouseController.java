@@ -11,6 +11,7 @@ import com.heiko.textrpgcreator.scenario.Choice;
 import com.heiko.textrpgcreator.scenario.Scenario;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -97,6 +98,7 @@ public class MouseController {
 
     private EventHandler<ScrollEvent> mouseScrolled = new EventHandler<ScrollEvent>() {
         public void handle(ScrollEvent event) {
+            if(!event.getTarget().toString().contains("Text")) {
 //            if(event.getDeltaY() > 0) {
 //                App.getWindowController().getScalingPane().setScaleX(App.getWindowController().getScalingPane().getScaleX() + 0.15);
 //                App.getWindowController().getScalingPane().setScaleY(App.getWindowController().getScalingPane().getScaleY() + 0.15);
@@ -105,37 +107,37 @@ public class MouseController {
 //                App.getWindowController().getScalingPane().setScaleY(App.getWindowController().getScalingPane().getScaleY() - 0.15);
 //            }
 
-            double delta = 1.2;
+                double delta = 1.2;
 
-            double scaleX = App.getWindowController().getScalingPane().getScaleX(); // currently we only use Y, same value is used for X
-            double scaleY = App.getWindowController().getScalingPane().getScaleY(); // currently we only use Y, same value is used for X
-            double oldScaleX = scaleX;
-            double oldScaleY = scaleY;
+                double scaleX = App.getWindowController().getScalingPane().getScaleX(); // currently we only use Y, same value is used for X
+                double scaleY = App.getWindowController().getScalingPane().getScaleY(); // currently we only use Y, same value is used for X
+                double oldScaleX = scaleX;
+                double oldScaleY = scaleY;
 
-            if(event.getDeltaY() < 0) {
-                scaleX /= delta;
-                scaleY /= delta;
-            } else {
-                scaleX *= delta;
-                scaleY *= delta;
+                if(event.getDeltaY() < 0) {
+                    scaleX /= delta;
+                    scaleY /= delta;
+                } else {
+                    scaleX *= delta;
+                    scaleY *= delta;
+                }
+
+                scaleX = clamp(scaleX, MIN_SCALE, MAX_SCALE);
+                scaleY = clamp(scaleY, MIN_SCALE, MAX_SCALE);
+
+                double f = (scaleX / oldScaleX) - 1;
+                double d = (scaleY / oldScaleY) - 1;
+
+                double dx = (event.getSceneX() - (App.getWindowController().getScalingPane().getBoundsInParent().getWidth() / 2 + App.getWindowController().getScalingPane().getBoundsInParent().getMinX()));
+                double dy = (event.getSceneY() - (App.getWindowController().getScalingPane().getBoundsInParent().getHeight() / 2 + App.getWindowController().getScalingPane().getBoundsInParent().getMinY()));
+
+                App.getWindowController().getScalingPane().setScaleX(scaleX);
+                App.getWindowController().getScalingPane().setScaleY(scaleY);
+
+                // note: pivot value must be untransformed, i. e. without scaling
+                setPivot(f * dx, d * dy);
+                event.consume();
             }
-
-            scaleX = clamp(scaleX, MIN_SCALE, MAX_SCALE);
-            scaleY = clamp(scaleY, MIN_SCALE, MAX_SCALE);
-
-            double f = (scaleX / oldScaleX) - 1;
-            double d = (scaleY / oldScaleY) - 1;
-
-            double dx = (event.getSceneX() - (App.getWindowController().getScalingPane().getBoundsInParent().getWidth() / 2 + App.getWindowController().getScalingPane().getBoundsInParent().getMinX()));
-            double dy = (event.getSceneY() - (App.getWindowController().getScalingPane().getBoundsInParent().getHeight() / 2 + App.getWindowController().getScalingPane().getBoundsInParent().getMinY()));
-
-            App.getWindowController().getScalingPane().setScaleX(scaleX);
-            App.getWindowController().getScalingPane().setScaleY(scaleY);
-
-            // note: pivot value must be untransformed, i. e. without scaling
-            setPivot(f * dx, d * dy);
-
-            event.consume();
         }
     };
 

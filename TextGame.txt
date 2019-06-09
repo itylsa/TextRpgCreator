@@ -1,0 +1,66 @@
+Versions of the game:
+- Game Creator + playing app
+- Playing app standalone
+
+
+The game:
+
+- Singleplayer 
+	- v2.0 maybe Multiplayer
+- Create character
+- Move through a created world, fight enemies, have conversations, make decisions were to go and what to do. Basically a text based RPG.
+	- maybe implement a system to randomly generate worlds
+
+
+Game Creator:
+
+- Create areas
+	- Area description
+	- Enemies (if there are any. Are they hidden and need to be triggered in some way?)
+	- Neutral/Friendly characters (if there are any)
+	- Possible ways to move on
+	- Objects to interact with (if your character meets requirements to notice them?)
+	
+	
+	
+Seperators
+	- Tag group seperator ;
+	- Tag Seperator :
+	- Value Seperator ,
+	- Value Grouping ()
+
+- Tags
+	- Start
+		- No special requirement (Start)
+		- Class (Start:Class(Warrior,Mage))
+		- Level (Start:Level(Above(10):Below(20)))
+		- Race (Start:Race(Human,Wolf))
+		- Gender (Start:Gender(Male,Female))
+		Combined example: Start:Class(Mage):Gender(Female);
+	- End
+	- Encounter
+		- Random
+			- Difficulty (Encounter:Random:Difficulty(10))
+			- Enemey Count (Encounter:Random:EnemyCount(4))
+			Combined example: Encounter:Random:Difficulty(10):EnemyCount(4);
+		- Predefined
+			- Defined Enemy (Encounter:Defined(Geralt the slayer))
+		Combined example: Encounter:Random:Difficulty(10):EnemyCount(4)
+	- Requirement for Choices
+		- Has (Requirement:Has(Knife,Stick))
+		- Wears (Requirement:Wears(Nothing,Clothes))
+		- Hp (Requirement:Hp(Below(50),Above(10)))
+		- Is (Requirement:Is(Dirty,Clean))
+		- Class (Start:Class(Warrior,Mage))
+		- Level (Start:Level(Above(10):Below(20)))
+		- Race (Start:Race(Human,Wolf))
+		- Gender (Start:Gender(Male,Female))
+		Combined example: Requirement:Is(Clean,Wet):Has(Wooden Stick,Club);
+	- Can not go back (NoBack)
+	
+Combined example: Requirement:Has(Knife):Wears(Nothing):Level(Above(5)):Gender(male);Encounter:Random:Difficulty(15):EnemyCount(5);
+	
+
+
+- Text Tags
+	
