@@ -16,6 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 /**
  * FXML Controller class
@@ -37,11 +38,27 @@ public class DragableScenarioController extends Controller implements Initializa
 
     private final BooleanProperty firstTime = new SimpleBooleanProperty(true);
 
+    private Color colorWithTextAndTags = Color.GREEN;
+
+    private Color colorWithTextOrTags = Color.YELLOW;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         App.getDragableScenarioControllers().add(this);
         removeFocus();
         addDragDropEvents();
+    }
+
+    public void colorIt() {
+        if(!marked) {
+            if(!textBody.getText().equals("") && !textTags.getText().equals("")) {
+                coverPane.setStyle("-fx-background-color: green; -fx-opacity: 0.5");
+            } else if(!textBody.getText().equals("") || !textTags.getText().equals("")) {
+                coverPane.setStyle("-fx-background-color: yellow; -fx-opacity: 0.5");
+            } else {
+                coverPane.setStyle("-fx-opacity: 0.0");
+            }
+        }
     }
 
     public void setMarked() {
@@ -52,6 +69,7 @@ public class DragableScenarioController extends Controller implements Initializa
     public void removeMarked() {
         marked = false;
         coverPane.setStyle("-fx-opacity: 0.0");
+        colorIt();
     }
 
     public void addDragDropEvents() {

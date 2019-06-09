@@ -200,6 +200,7 @@ public class DragDropController {
                     AnchorPane p = (AnchorPane) e.getSource();
                     Pane cp = (Pane) p.getChildren().get(1);
                     cp.setStyle("-fx-border-color: black; -fx-border-width: 1px");
+                    App.findScenario(p).getDragableScenarioController().colorIt();
                 }
             }
         };
@@ -236,6 +237,7 @@ public class DragDropController {
                 if(ccp.getStyle().contains("border")) {
                     ccp.setStyle("-fx-border-color: black; -fx-border-width: 1px");
                 }
+                App.findScenario(currentPane).getDragableScenarioController().colorIt();
 
                 if(App.getShortcutController().isIsShiftPressed()) {
                     App.getShortcutController().setIsShiftPressed(false);
