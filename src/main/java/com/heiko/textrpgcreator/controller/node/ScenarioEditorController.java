@@ -56,6 +56,7 @@ public class ScenarioEditorController implements Initializable {
         scenario.setTags(scenarioTags.getText());
         scenario.setBody(scenarioText.getText());
         scenario.getDragableScenarioController().setBodyAndTags(scenarioTags.getText(), scenarioText.getText());
+        scenario.getDragableScenarioController().colorIt();
         scenario = null;
         scenarioTags.setText("");
         scenarioText.setText("");

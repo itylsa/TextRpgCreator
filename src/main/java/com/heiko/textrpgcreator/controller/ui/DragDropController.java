@@ -228,10 +228,8 @@ public class DragDropController {
                     whichSide(currentPane, targetPane);
                     new Arrow(currentPane, targetPane, startPoint.getX(), startPoint.getY(), endPoint.getX(), endPoint.getY());
                 } else if(db.hasString() && db.getString().equals("new Arrow") && currentPane.getChildren().get(1) == e.getTarget()) {
-                    System.out.println("Cant go on itself");
                 } else if(db.hasString() && db.getString().equals("new Arrow")) {
                     App.setArrowExists(false);
-                    System.out.println("Arrow exists");
                 }
                 Pane ccp = (Pane) currentPane.getChildren().get(1);
                 if(ccp.getStyle().contains("border")) {

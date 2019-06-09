@@ -71,7 +71,7 @@ public class App extends Application {
 
     private static InfoController infoController;
 
-    private AnchorPane infoBox = (AnchorPane) loadFXML("Info");
+    private AnchorPane infoBox;
 
     private static HelpWindowController helpWindowController;
 
@@ -101,7 +101,7 @@ public class App extends Application {
 
     private static Timeline autosave;
 
-    private static AnchorPane helpWindow = (AnchorPane) loadFXML("HelpWindow");
+    private static AnchorPane helpWindow;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -119,11 +119,13 @@ public class App extends Application {
 
     public static void startAutosave() {
         if(!initialPath.equals("") && !adventureName.equals("")) {
-            autosave = new Timeline(new KeyFrame(Duration.seconds(60), (event) -> {
-                fileController.saveProgress(new File(initialPath + "\\" + adventureName + ".xml"));
-            }));
-            autosave.setCycleCount(Timeline.INDEFINITE);
-            autosave.play();
+            if(autosave == null || !autosave.getStatus().toString().equals("RUNNING")) {
+                autosave = new Timeline(new KeyFrame(Duration.seconds(600), (event) -> {
+                    fileController.saveProgress(new File(initialPath + "\\" + adventureName + ".xml"));
+                }));
+                autosave.setCycleCount(Timeline.INDEFINITE);
+                autosave.play();
+            }
         }
     }
 
@@ -140,7 +142,9 @@ public class App extends Application {
     }
 
     public static void showInfoBox(String text) {
-        
+        if(infoController == null) {
+            windowController.getAnchorPane().getChildren().add(loadFXML("Info"));
+        }
         infoController.setInfoText(text);
         FadeTransition ft = new FadeTransition(Duration.millis(500), infoController.getPane());
         ft.setFromValue(0.0);
@@ -419,7 +423,7 @@ public class App extends Application {
 
     public static void clearAll() {
         scenarios.clear();
-        windowController.getScalingPane().getChildren().clear();
+        windowController.getScalingPane().getChildren().remove(8, windowController.getScalingPane().getChildren().size());
     }
 
     public static void main(String[] args) {
@@ -593,5 +597,9 @@ public class App extends Application {
 
     public static AnchorPane getHelpWindow() {
         return helpWindow;
+    }
+
+    public static void setHelpWindow(AnchorPane helpWindow) {
+        App.helpWindow = helpWindow;
     }
 }

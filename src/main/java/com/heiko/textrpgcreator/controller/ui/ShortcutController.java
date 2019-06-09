@@ -11,6 +11,7 @@ import java.awt.Event;
 import java.io.File;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -37,6 +38,9 @@ public class ShortcutController {
                 isShiftPressed = true;
             }
             if(e.getCode().toString().equals("F1")) {
+                if(App.getHelpWindow() == null) {
+                    App.setHelpWindow((AnchorPane) App.loadFXML("HelpWindow"));
+                }
                 if(!App.getWindowController().getAnchorPane().getChildren().contains(App.getHelpWindow())) {
                     App.getWindowController().getAnchorPane().getChildren().add(App.getHelpWindow());
                 } else {

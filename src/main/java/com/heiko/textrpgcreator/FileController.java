@@ -89,6 +89,7 @@ public class FileController {
                 xmlOutput.setFormat(Format.getPrettyFormat());
                 FileOutputStream fos = new FileOutputStream(file);
                 xmlOutput.output(adventure, fos);
+                fos.flush();
                 fos.close();
 
                 App.showInfoBox("Progress saved!");
