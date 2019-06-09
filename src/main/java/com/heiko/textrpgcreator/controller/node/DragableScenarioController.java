@@ -79,6 +79,11 @@ public class DragableScenarioController extends Controller implements Initializa
         pane.setLayoutY(y - getAnchorParentPane().getPrefHeight() / 2);
     }
 
+    public void setPositionCorner(double x, double y) {
+        pane.setLayoutX(x);
+        pane.setLayoutY(y);
+    }
+
     private void removeFocus() {
         textTags.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue && firstTime.get()) {

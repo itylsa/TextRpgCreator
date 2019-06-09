@@ -55,14 +55,15 @@ public class WindowController extends Controller implements Initializable {
 
     public void addDragableScenario(double x, double y, Scenario scenario) {
         DragableScenarioController controller = (DragableScenarioController) App.loadFXMLController("DragableScenario");
-        controller.setPosition(x, y);
         if(scenario == null) {
             App.getScenarios().add(new Scenario(App.getHighestId() + 1, controller.getTextTags().getText(), controller.getTextBody().getText(), controller));
             App.setHighestId(App.getHighestId() + 1);
+            controller.setPosition(x, y);
         } else {
             scenario.setDragableScenarioController(controller);
             App.getScenarios().add(scenario);
             controller.setBodyAndTags(scenario.getTags(), scenario.getBody());
+            controller.setPositionCorner(x, y);
         }
         scalingPane.getChildren().add(controller.getPane());
     }
@@ -132,6 +133,10 @@ public class WindowController extends Controller implements Initializable {
 
     public Parent getPane() {
         return pane;
+    }
+    
+    public AnchorPane getAnchorPane() {
+        return (AnchorPane) pane;
     }
 
     public Pane getScalingPane() {

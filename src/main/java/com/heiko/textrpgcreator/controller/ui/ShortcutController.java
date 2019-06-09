@@ -37,19 +37,25 @@ public class ShortcutController {
             }
             //If control and s are pressed
             if(e.getCode().toString().equals("S") && isControlPressed) {
-                if(!App.getInitialPath().equals("")) {
-                    fileChooser.setInitialDirectory(new File(App.getInitialPath()));
+                File file = null;
+                if(isShiftPressed || App.getInitialPath().equals("") || App.getAdventureName().equals("")) {
+                    if(!App.getInitialPath().equals("")) {
+                        fileChooser.setInitialDirectory(new File(App.getInitialPath()));
+                    }
+                    fileChooser.setTitle("Xml to save to");
+                    FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
+                    fileChooser.getExtensionFilters().add(extFilter);
+                    file = fileChooser.showSaveDialog(App.getStage());
+                } else {
+                    file = new File(App.getInitialPath() + "\\" + App.getAdventureName() + ".xml");
                 }
-                fileChooser.setTitle("Xml to save to");
-                FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
-                fileChooser.getExtensionFilters().add(extFilter);
-                File file = fileChooser.showSaveDialog(App.getStage());
                 if(file != null) {
                     App.setInitialPath(file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf("\\")));
                     App.getFileController().setInitialPath();
                     App.setAdventureName(file.getName().substring(0, file.getName().lastIndexOf(".")));
                     App.getFileController().saveProgress(file);
                 }
+                isShiftPressed = false;
             }
             if(e.getCode().toString().equals("L") && isControlPressed) {
                 if(!App.getInitialPath().equals("")) {
@@ -64,6 +70,7 @@ public class ShortcutController {
                     App.getFileController().setInitialPath();
                     App.getFileController().loadProgress(file);
                 }
+                isShiftPressed = false;
             }
             if(e.getCode().toString().equals("A") && isControlPressed) {
                 App.markAllNodes();

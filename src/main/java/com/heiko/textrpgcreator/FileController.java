@@ -5,6 +5,7 @@
  */
 package com.heiko.textrpgcreator;
 
+import com.heiko.textrpgcreator.controller.node.InfoController;
 import com.heiko.textrpgcreator.scenario.Choice;
 import com.heiko.textrpgcreator.scenario.Scenario;
 import java.io.File;
@@ -14,6 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.scene.control.Alert;
+import javafx.util.Duration;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -85,6 +90,9 @@ public class FileController {
                 FileOutputStream fos = new FileOutputStream(file);
                 xmlOutput.output(adventure, fos);
                 fos.close();
+
+                App.showInfoBox("Progress saved!");
+                App.startAutosave();
             } catch(IOException ex) {
                 Logger.getLogger(FileController.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -124,7 +132,8 @@ public class FileController {
                 Scenario end = App.findScenario(Integer.valueOf(c.getChildText("Id")));
                 App.getWindowController().addArrow(start, end, Integer.valueOf(c.getChildText("Id")), c.getChildText("Tags"), c.getChildText("Text"));
             }
-
+            App.showInfoBox("Progress loaded!");
+            App.startAutosave();
         } catch(JDOMException ex) {
             Logger.getLogger(FileController.class.getName()).log(Level.SEVERE, null, ex);
         } catch(IOException ex) {

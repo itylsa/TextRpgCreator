@@ -1,5 +1,6 @@
 package com.heiko.textrpgcreator;
 
+import com.heiko.textrpgcreator.controller.node.InfoController;
 import com.heiko.textrpgcreator.controller.node.ChoiceEditorController;
 import com.heiko.textrpgcreator.controller.node.Controller;
 import com.heiko.textrpgcreator.controller.node.DeleteChoiceController;
@@ -12,10 +13,16 @@ import com.heiko.textrpgcreator.controller.ui.ShortcutController;
 import com.heiko.textrpgcreator.scenario.Arrow;
 import com.heiko.textrpgcreator.scenario.Choice;
 import com.heiko.textrpgcreator.scenario.Scenario;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -24,6 +31,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.Duration;
 
 /**
  * JavaFX App
@@ -60,6 +68,8 @@ public class App extends Application {
 
     private static ScenarioEditorController scenarioEditorController;
 
+    private static InfoController infoController;
+
     private static Stage editorStage;
 
     private static Scene editorScene;
@@ -81,8 +91,10 @@ public class App extends Application {
     private static String adventureName = "";
 
     private static String initialPath = "";
-    
+
     private static String title = "Adventure Editor";
+
+    private static Timeline autosave;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -95,6 +107,42 @@ public class App extends Application {
         setMouseListeners();
         this.stage.show();
         fileController.getInitialPath();
+    }
+
+    public static void startAutosave() {
+        if(!initialPath.equals("") && !adventureName.equals("")) {
+            autosave = new Timeline(new KeyFrame(Duration.seconds(60), (event) -> {
+                fileController.saveProgress(new File(initialPath + "\\" + adventureName + ".xml"));
+            }));
+            autosave.setCycleCount(Timeline.INDEFINITE);
+            autosave.play();
+        }
+    }
+
+    public static void pauseAutosave() {
+        if(autosave != null) {
+            autosave.pause();
+        }
+    }
+
+    public static void resumeAutosave() {
+        if(!initialPath.equals("") && !adventureName.equals("") && autosave != null) {
+            autosave.play();
+        }
+    }
+
+    public static void showInfoBox(String text) {
+        if(infoController == null) {
+            InfoController infoController = (InfoController) App.loadFXMLController("Info");
+            windowController.getAnchorPane().getChildren().add(infoController.getPane());
+        }
+        infoController.setInfoText(text);
+        FadeTransition ft = new FadeTransition(Duration.millis(500), infoController.getPane());
+        ft.setFromValue(0.0);
+        ft.setToValue(1.0);
+        ft.setCycleCount(2);
+        ft.setAutoReverse(true);
+        ft.play();
     }
 
     public static void addMarkedNode(Node node, boolean isShiftPressed) {
@@ -358,7 +406,7 @@ public class App extends Application {
         choiceStage.close();
         choiceStage = null;
     }
-    
+
     public static void clearAll() {
         scenarios.clear();
         windowController.getScalingPane().getChildren().clear();
@@ -515,5 +563,13 @@ public class App extends Application {
 
     public static void setInitialPath(String initialPath) {
         App.initialPath = initialPath;
+    }
+
+    public static InfoController getInfoController() {
+        return infoController;
+    }
+
+    public static void setInfoController(InfoController infoController) {
+        App.infoController = infoController;
     }
 }
