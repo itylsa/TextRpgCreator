@@ -107,6 +107,7 @@ public class App extends Application {
         setMouseListeners();
         this.stage.show();
         fileController.getInitialPath();
+        windowController.getScalingPane().setTranslateY(100000);
     }
 
     public static void startAutosave() {
