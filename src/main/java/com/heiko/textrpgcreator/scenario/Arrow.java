@@ -36,11 +36,11 @@ public class Arrow extends Line {
 
     private Choice choice;
 
-    private Color color = Color.BLACK;
+    private Color colorWithoutTextAndTags = Color.BLACK;
 
-    private Color colorWithText1 = Color.GREEN;
+    private Color colorWithTextAndTags = Color.GREEN;
 
-    private Color colorWithText2 = Color.YELLOW;
+    private Color colorWithTextOrTags = Color.YELLOW;
 
     private boolean hasText = false;
 
@@ -50,7 +50,7 @@ public class Arrow extends Line {
         line = new Line(startX, startY, endX, endY);
         line.setStrokeWidth(width);
         circle = new Circle(endX, endY, radius);
-        setColor(color);
+        setColor(colorWithoutTextAndTags);
         App.getWindowController().getScalingPane().getChildren().add(line);
         App.getWindowController().getScalingPane().getChildren().add(circle);
         Scenario start = App.findScenario(startPane);
@@ -63,29 +63,12 @@ public class Arrow extends Line {
     }
 
     public void colorArrow() {
-        boolean bothWays = false;
-        Choice target = null;
-        for(Choice c : choice.getEndScenario().getOutgoingChoices()) {
-            if(choice.getEndScenario() == c.getStartScenario()) {
-                target = c;
-                bothWays = true;
-            }
-        }
-        if(!choice.getText().equals("") && !bothWays) {
-            choice.getChoiceArrow().setColor(choice.getChoiceArrow().getColorWithText1());
-            choice.getChoiceArrow().setHasText(true);
-            choice.getChoiceArrow().setIsGreen(true);
-        } else if(!choice.getText().equals("") && bothWays && !target.getChoiceArrow().isIsGreen()) {
-            choice.getChoiceArrow().setColor(choice.getChoiceArrow().getColorWithText1());
-            choice.getChoiceArrow().setHasText(true);
-            choice.getChoiceArrow().setIsGreen(true);
-        } else if(!choice.getText().equals("") && bothWays && target.getChoiceArrow().isIsGreen()) {
-            choice.getChoiceArrow().setColor(choice.getChoiceArrow().getColorWithText2());
-            choice.getChoiceArrow().setHasText(true);
+        if(!choice.getTags().equals("") && !choice.getText().equals("")) {
+            setColor(colorWithTextAndTags);
+        } else if(!choice.getTags().equals("") || !choice.getText().equals("")) {
+            setColor(colorWithTextOrTags);
         } else {
-            choice.getChoiceArrow().setColor(Color.BLACK);
-            choice.getChoiceArrow().setHasText(false);
-            choice.getChoiceArrow().setIsGreen(false);
+            setColor(colorWithoutTextAndTags);
         }
     }
 
@@ -94,15 +77,7 @@ public class Arrow extends Line {
     }
 
     public void removeMarked() {
-        if(hasText) {
-            if(isGreen) {
-                setColor(colorWithText1);
-            } else {
-                setColor(colorWithText2);
-            }
-        } else {
-            setColor(Color.BLACK);
-        }
+        colorArrow();
     }
 
     public void moveEnd(double endX, double endY) {
@@ -180,11 +155,10 @@ public class Arrow extends Line {
     }
 
     public Color getColor() {
-        return color;
+        return colorWithoutTextAndTags;
     }
 
     public void setColor(Color color) {
-        this.color = color;
         line.setStroke(color);
         circle.setStroke(color);
         circle.setFill(color);
@@ -199,19 +173,19 @@ public class Arrow extends Line {
     }
 
     public Color getColorWithText1() {
-        return colorWithText1;
+        return colorWithTextAndTags;
     }
 
     public void setColorWithText1(Color colorWithText1) {
-        this.colorWithText1 = colorWithText1;
+        this.colorWithTextAndTags = colorWithText1;
     }
 
     public Color getColorWithText2() {
-        return colorWithText2;
+        return colorWithTextOrTags;
     }
 
     public void setColorWithText2(Color colorWithText2) {
-        this.colorWithText2 = colorWithText2;
+        this.colorWithTextOrTags = colorWithText2;
     }
 
     public boolean isIsGreen() {

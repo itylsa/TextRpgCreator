@@ -16,6 +16,10 @@ and open the template in the editor.
     -fx-hbar-policy: never;
     -fx-vbar-policy: never;
 }
+#text .scroll-pane {
+    -fx-hbar-policy: never;
+    -fx-vbar-policy: never;
+}
 
 .text-area {
     text-area-background: black ;
@@ -34,5 +38,9 @@ and open the template in the editor.
 }
 
 #choiceTags .content {
+    -fx-background-color: text-area-background ;
+}
+
+#text .content {
     -fx-background-color: text-area-background ;
 }

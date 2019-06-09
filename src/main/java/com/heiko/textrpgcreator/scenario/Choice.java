@@ -13,9 +13,9 @@ public class Choice {
 
     private int id;
 
-    private String tags;
+    private String tags = "";
 
-    private String text;
+    private String text = "";
 
     private Scenario startScenario;
 

@@ -109,9 +109,22 @@ public class DragDropController {
                 Dragboard db = e.getDragboard();
                 if(db.hasString() && db.getString().equals("DRAG ME")) {
                     e.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-                    if(e.getSource().toString().contains("AnchorPane")) {
+                    if(e.getSource().toString().contains("AnchorPane") && e.getSource() == currentPane) {
                         markedPaneScenarios.forEach((t) -> {
                             moveNode(t, e.getX() + t.getDragableScenarioController().getAnchorParentPane().getLayoutX(), e.getY() + t.getDragableScenarioController().getAnchorParentPane().getLayoutY());
+                        });
+                        moveArrows(e);
+                    } else if(e.getSource().toString().contains("AnchorPane") && e.getSource() != currentPane) {
+                        double oldX = currentPane.getLayoutX();
+                        double oldY = currentPane.getLayoutY();
+                        AnchorPane p = (AnchorPane) e.getSource();
+                        markedPaneScenarios.forEach((t) -> {
+                            if(currentPane == t.getDragableScenarioController().getAnchorParentPane()) {
+                                moveNode(t, e.getX() + p.getLayoutX(), e.getY() + p.getLayoutY());
+                            } else {
+                                moveNode(t, t.getDragableScenarioController().getAnchorParentPane().getLayoutX() + currentPane.getLayoutX() - oldX + (t.getDragableScenarioController().getAnchorParentPane().getPrefWidth() / 2),
+                                        t.getDragableScenarioController().getAnchorParentPane().getLayoutY() + currentPane.getLayoutY() - oldY + (t.getDragableScenarioController().getAnchorParentPane().getPrefHeight() / 2));
+                            }
                         });
                         moveArrows(e);
                     } else {
@@ -213,12 +226,11 @@ public class DragDropController {
                 if(db.hasString() && db.getString().equals("new Arrow") && targetPane != null && !App.arrowAllreadyExists(currentPane, targetPane) && currentPane.getChildren().get(1) != e.getTarget()) {
                     whichSide(currentPane, targetPane);
                     new Arrow(currentPane, targetPane, startPoint.getX(), startPoint.getY(), endPoint.getX(), endPoint.getY());
-                } else if(db.hasString() && db.getString().equals("new Arrow") &&currentPane.getChildren().get(1) == e.getTarget()) {
+                } else if(db.hasString() && db.getString().equals("new Arrow") && currentPane.getChildren().get(1) == e.getTarget()) {
                     System.out.println("Cant go on itself");
                 } else if(db.hasString() && db.getString().equals("new Arrow")) {
                     App.setArrowExists(false);
                     System.out.println("Arrow exists");
-                    //TODO
                 }
                 Pane ccp = (Pane) currentPane.getChildren().get(1);
                 if(ccp.getStyle().contains("border")) {
