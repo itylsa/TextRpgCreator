@@ -42,9 +42,11 @@ Seperators
 		- Random
 			- Difficulty (Encounter:Random:Difficulty(10))
 			- Enemey Count (Encounter:Random:EnemyCount(4))
+			- Loot (Encounter:Random:Loot(Quality(rare), Quantity(3))
 			Combined example: Encounter:Random:Difficulty(10):EnemyCount(4);
 		- Predefined
-			- Defined Enemy (Encounter:Defined(Geralt the slayer))
+			- Defined Enemy (Encounter:Defined:Enemies(Geralt the slayer))
+			- Loot (Encounter:Defined:Loot(Knife of death);
 		Combined example: Encounter:Random:Difficulty(10):EnemyCount(4)
 	- Requirement for Choices
 		- Has (Requirement:Has(Knife,Stick))
