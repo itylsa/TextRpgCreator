@@ -378,7 +378,7 @@ public class App extends Application {
         editorScene.getStylesheets().clear();
         editorScene.getStylesheets().add(App.class.getResource("MainCSS.css").toExternalForm());
         editorStage.setScene(editorScene);
-        editorStage.setResizable(false);
+        editorStage.setResizable(true);
         if(fxml.equals("ScenarioEditor")) {
             scenarioEditorController.openScenarioEditor(scenario);
             editorStage.setTitle("Edit Scenario");

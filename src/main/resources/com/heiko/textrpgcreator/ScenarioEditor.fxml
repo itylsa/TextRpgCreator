@@ -8,22 +8,22 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="800.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.heiko.textrpgcreator.controller.node.ScenarioEditorController">
+<AnchorPane id="AnchorPane" fx:id="pane" prefHeight="1000.0" prefWidth="800.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.heiko.textrpgcreator.controller.node.ScenarioEditorController">
    <children>
-      <VBox fx:id="box" alignment="TOP_CENTER" prefHeight="1000.0" prefWidth="800.0" spacing="5.0">
+      <VBox fx:id="box" alignment="TOP_CENTER" prefHeight="1000.0" prefWidth="800.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label fx:id="tagsLabel" text="Scenario Tags" textFill="#00feff">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextArea id="scenarioTags" fx:id="scenarioTags" prefHeight="100.0" prefWidth="800.0" wrapText="true" />
+            <TextArea id="scenarioTags" fx:id="scenarioTags" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="60.0" prefHeight="60.0" prefWidth="800.0" wrapText="true" />
             <Label fx:id="textLabel" text="Scenario Text" textFill="#00feff">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextArea fx:id="scenarioText" prefHeight="900.0" prefWidth="800.0" wrapText="true" />
+            <TextArea fx:id="scenarioText" maxHeight="10000.0" maxWidth="1.7976931348623157E308" minHeight="880.0" prefHeight="10000.0" prefWidth="800.0" wrapText="true" />
          </children>
          <padding>
             <Insets top="5.0" />

@@ -10,20 +10,20 @@
 
 <AnchorPane id="AnchorPane" fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="800.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.heiko.textrpgcreator.controller.node.ChoiceEditorController">
    <children>
-      <VBox fx:id="box" alignment="TOP_CENTER" prefHeight="1000.0" prefWidth="800.0" spacing="5.0">
+      <VBox fx:id="box" alignment="TOP_CENTER" prefHeight="1000.0" prefWidth="800.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label fx:id="textLabel1" text="Choice Tags" textFill="#00feff">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextArea fx:id="choiceTags" prefHeight="100.0" prefWidth="800.0" />
+            <TextArea fx:id="choiceTags" minHeight="60.0" prefHeight="60.0" prefWidth="800.0" />
             <Label fx:id="textLabel" text="Choice Text" textFill="#00feff">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextArea fx:id="choiceText" prefHeight="900.0" prefWidth="800.0" wrapText="true" />
+            <TextArea fx:id="choiceText" minHeight="880.0" prefHeight="10000.0" prefWidth="800.0" wrapText="true" />
          </children>
          <padding>
             <Insets top="5.0" />
