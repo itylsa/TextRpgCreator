@@ -162,7 +162,7 @@ public class TagEditorController extends Controller implements Initializable {
                 itemsToRemove.add(c.getValue().toString());
             }
         }
-        itemsToAdd = allItems;
+        itemsToAdd.addAll(allItems);
         for(String i : allItems) {
             for(ComboBox c : cbs) {
                 if(c.getValue() != null && i.equals(c.getValue().toString())) {
@@ -189,7 +189,13 @@ public class TagEditorController extends Controller implements Initializable {
     }
 
     private void addItemsToValueComboBoxes(List<ComboBox> cbs, List<String> itemsToAdd) {
-
+        for(ComboBox c : cbs) {
+            for(String i : itemsToAdd) {
+                if(!c.getItems().contains(i)) {
+                    c.getItems().add(i);
+                }
+            }
+        }
     }
 
     public int checkForEmptyValueComboBoxes() {

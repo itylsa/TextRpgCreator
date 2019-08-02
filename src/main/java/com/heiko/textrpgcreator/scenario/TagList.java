@@ -32,8 +32,6 @@ public class TagList {
                 list.add(t.getTagName());
             }
         }
-        System.out.println(list);
-        System.out.println(tag.getValues());
         if(list.isEmpty() && tag.getValues() == null) {
             return null;
         } else if(list.isEmpty() && tag.getValues().get(0).equals("novalues")) {

@@ -1,5 +1,5 @@
 No special requirement
-Class(Warrior,Mage)
+Class(Warrior,Mage,Archer,Rogue)
 Level
 -Above
 --test
