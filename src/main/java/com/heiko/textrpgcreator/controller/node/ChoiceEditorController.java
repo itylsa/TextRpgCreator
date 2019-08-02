@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
@@ -32,34 +33,40 @@ public class ChoiceEditorController implements Initializable {
     @FXML
     private TextArea choiceText;
     @FXML
-    private TextArea choiceTags;
-    @FXML
     private Label textLabel;
+    @FXML
+    private Button tagEditButton;
 
     private Choice choice;
+    
+    private String tags;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         App.setChoiceEditorController(this);
         choiceText.requestFocus();
         choiceText.setStyle("-fx-text-fill: white;");
-        choiceTags.setStyle("-fx-text-fill: white;");
     }
 
     public void openChoiceEditor(Choice choice) {
         this.choice = choice;
-        choiceTags.setText(choice.getTags());
+        tags = choice.getTags();
         choiceText.setText(choice.getText());
     }
 
     public void closeChoiceEditor() {
         choice.setText(choiceText.getText());
-        choice.setTags(choiceTags.getText());
+        choice.setTags(tags);
         choice.getChoiceArrow().colorArrow();
         choice = null;
         choiceText.setText("");
         App.setCurrentChoice(null);
         App.closeEditor();
+    }
+
+    @FXML
+    private void editTags() {
+        App.openEditor("TagEditor", null, choice);
     }
 
     public Parent getPane() {
@@ -86,7 +93,11 @@ public class ChoiceEditorController implements Initializable {
         this.choice = choice;
     }
 
-    public TextArea getChoiceTags() {
-        return choiceTags;
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
     }
 }

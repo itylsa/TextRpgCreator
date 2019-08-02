@@ -17,7 +17,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextArea id="scenarioTags" fx:id="scenarioTags" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="60.0" prefHeight="60.0" prefWidth="800.0" wrapText="true" />
+            <Button fx:id="tagEditButton" mnemonicParsing="false" onAction="#editTags" text="Edit Tags" />
             <Label fx:id="textLabel" text="Scenario Text" textFill="#00feff">
                <font>
                   <Font size="14.0" />

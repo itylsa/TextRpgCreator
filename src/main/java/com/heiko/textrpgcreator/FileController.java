@@ -8,15 +8,22 @@ package com.heiko.textrpgcreator;
 import com.heiko.textrpgcreator.controller.node.InfoController;
 import com.heiko.textrpgcreator.scenario.Choice;
 import com.heiko.textrpgcreator.scenario.Scenario;
+import com.heiko.textrpgcreator.scenario.Tag;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.util.Duration;
 import org.jdom2.Document;
@@ -31,6 +38,16 @@ import org.jdom2.output.XMLOutputter;
  * @author eiko1
  */
 public class FileController {
+
+    private File scenarioGroupFile = new File("Assets\\ScenarioTags.txt");
+
+    private File choiceGroupFile = new File("Assets\\ChoiceTags.txt");
+
+    private File startFile = new File("Assets\\StartTags.txt");
+
+    private File encounterFile = new File("Assets\\EncounterTags.txt");
+
+    private File requirementFile = new File("Assets\\RequirementTags.txt");
 
     public void saveProgress(File file) {
         if(!file.exists()) {
@@ -182,5 +199,135 @@ public class FileController {
         } catch(JDOMException ex) {
             Logger.getLogger(FileController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public ObservableList getGroupTags(String file) {
+        file = file.toLowerCase();
+        ObservableList list = FXCollections.observableArrayList();
+        switch(file) {
+            case "scenario":
+                list = readLines(scenarioGroupFile);
+                break;
+            case "choice":
+                list = readLines(choiceGroupFile);
+                break;
+        }
+        return list;
+    }
+
+    public List<Tag> getTags(String file) {
+        file = file.toLowerCase();
+        List<Tag> tags = new ArrayList<>();
+        switch(file) {
+            case "encounter":
+                getItems(readLines(encounterFile), tags);
+                break;
+            case "requirement":
+                getItems(readLines(requirementFile), tags);
+                break;
+            case "start":
+                getItems(readLines(startFile), tags);
+                break;
+            default:
+                System.out.println("Nothing here");
+        }
+        return tags;
+    }
+
+    private List<Tag> getItems(ObservableList list, List<Tag> tags) {
+        for(Object l : list) {
+            String line = l.toString();
+            if(line.contains("-")) {
+                tags.set(tags.size() - 1, addSubTags(line, tags.get(tags.size() - 1)));
+            } else if(line.contains("(")) {
+                tags.add(addValues(line, null));
+            } else {
+                tags.add(getNewTag(line));
+            }
+        }
+//        for(Tag tag : tags) {
+//            tt(tag, 0);
+//        }
+        return tags;
+    }
+
+    private void tt(Tag t, int i) {
+        System.out.println("Level " + i);
+        System.out.println("Tag Name " + t.getTagName());
+        if(t.getValues() != null && !t.getValues().isEmpty()) {
+            System.out.println("Values " + t.getValues());
+        }
+        if(!t.getSubTags().isEmpty()) {
+            i++;
+            for(Tag tt : t.getSubTags()) {
+                tt(tt, i);
+            }
+        }
+    }
+
+    private Tag getNewTag(String line) {
+        Tag tag = new Tag();
+        tag.setTagName(line);
+        return tag;
+    }
+
+    private Tag addSubTags(String line, Tag tag) {
+        Tag ot = tag;
+        int n = line.substring(0, line.lastIndexOf("-")).length();
+        for(int i = 0; i < n; i++) {
+            tag = tag.getSubTags().get(tag.getSubTags().size() - 1);
+        }
+        line = line.substring(line.lastIndexOf("-") + 1);
+        Tag t = new Tag();
+        if(line.contains("(")) {
+            t = addValues(line, t);
+        } else {
+            t = getNewTag(line);
+        }
+        t.setParent(tag);
+        if(ot != tag) {
+            tag.getSubTags().add(t);
+            for(int i = 0; i < n; i++) {
+                tag = tag.getParent();
+            }
+            ot = tag;
+        } else {
+            ot.getSubTags().add(t);
+        }
+        return ot;
+    }
+
+    private Tag addValues(String line, Tag tag) {
+        String oldLine = line;
+        if(!line.startsWith("(")) {
+            tag = getNewTag(line.split("\\(")[0]);
+            line = line.substring(line.indexOf("("));
+        }
+        if(line.length() > 2 && line.contains(",")) {
+            line = line.split("\\(")[1].split("\\)")[0];
+            tag.setAllValues(Arrays.asList(line.split("\\,")));
+        } else if(line.length() > 2 && !line.contains(",")) {
+            line = line.split("\\(")[1].split("\\)")[0];
+            tag.setAllValues(Arrays.asList(line));
+        } else if(line.length() == 2) {
+            tag.setAllValues(Arrays.asList("novalues"));
+        } else {
+            tag.setAllValues(Arrays.asList(""));
+        }
+        return tag;
+    }
+
+    private ObservableList readLines(File file) {
+        ObservableList list = FXCollections.observableArrayList();
+        BufferedReader r;
+        try {
+            r = new BufferedReader(new FileReader(file));
+            r.lines().forEach((t) -> {
+                list.add(t);
+            });
+        } catch(FileNotFoundException ex) {
+            Logger.getLogger(FileController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
     }
 }

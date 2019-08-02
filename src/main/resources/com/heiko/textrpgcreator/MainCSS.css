@@ -44,3 +44,7 @@ and open the template in the editor.
 #text .content {
     -fx-background-color: text-area-background ;
 }
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}

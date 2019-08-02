@@ -1,0 +1,11 @@
+No special requirement
+Class(Warrior,Mage)
+Level
+-Above
+--test
+---test2
+----test3(asd,asd)
+-Below()
+-Exact()
+Race(Human,Wolf)
+Gender(Male,Female)

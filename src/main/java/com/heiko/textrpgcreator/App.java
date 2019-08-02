@@ -7,6 +7,7 @@ import com.heiko.textrpgcreator.controller.node.DeleteChoiceController;
 import com.heiko.textrpgcreator.controller.node.DragableScenarioController;
 import com.heiko.textrpgcreator.controller.node.HelpWindowController;
 import com.heiko.textrpgcreator.controller.node.ScenarioEditorController;
+import com.heiko.textrpgcreator.controller.node.TagEditorController;
 import com.heiko.textrpgcreator.controller.node.WindowController;
 import com.heiko.textrpgcreator.controller.ui.DragDropController;
 import com.heiko.textrpgcreator.controller.ui.MouseController;
@@ -68,6 +69,8 @@ public class App extends Application {
     private static ChoiceEditorController choiceEditorController;
 
     private static ScenarioEditorController scenarioEditorController;
+
+    private static TagEditorController tagEditorController;
 
     private static InfoController infoController;
 
@@ -385,11 +388,17 @@ public class App extends Application {
             editorStage.setOnCloseRequest(e -> {
                 scenarioEditorController.closeScenarioEditor();
             });
-        } else {
+        } else if(fxml.equals("ChoiceEditor")) {
             choiceEditorController.openChoiceEditor(choice);
             editorStage.setTitle("Edit Choice");
             editorStage.setOnCloseRequest(e -> {
                 choiceEditorController.closeChoiceEditor();
+            });
+        } else if(fxml.equals("TagEditor")) {
+            tagEditorController.openTagEditor(scenario, choice);
+            editorStage.setTitle("Edit Tags");
+            editorStage.setOnCloseRequest(e -> {
+                tagEditorController.closeTagEditor();
             });
         }
         editorStage.show();
@@ -601,5 +610,13 @@ public class App extends Application {
 
     public static void setHelpWindow(AnchorPane helpWindow) {
         App.helpWindow = helpWindow;
+    }
+
+    public static TagEditorController getTagEditorController() {
+        return tagEditorController;
+    }
+
+    public static void setTagEditorController(TagEditorController tagEditorController) {
+        App.tagEditorController = tagEditorController;
     }
 }

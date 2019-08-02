@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" fx:id="pane" prefHeight="800.0" prefWidth="900.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.heiko.textrpgcreator.controller.node.TagEditorController">
+   <children>
+      <VBox layoutX="400.0" layoutY="164.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <HBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="900.0">
+               <children>
+                  <ComboBox fx:id="groupCb" prefWidth="150.0" />
+               </children>
+            </HBox>
+            <FlowPane fx:id="choicePane" hgap="5.0" minHeight="200.0" prefHeight="5000.0" prefWidth="900.0" rowValignment="TOP" style="-fx-background-color: black;" vgap="5.0">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </FlowPane>
+            <HBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="900.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#saveTag" text="Save Tag" />
+               </children>
+            </HBox>
+            <ScrollPane fx:id="tagsScrollPane" minHeight="500.0" prefHeight="5000.0" prefWidth="900.0" style="-fx-background-color: black;">
+               <content>
+                  <VBox fx:id="tagsBox" maxHeight="5000.0" maxWidth="5000.0" prefHeight="498.0" prefWidth="880.0" spacing="5.0" style="-fx-background-color: black;">
+                     <padding>
+                        <Insets bottom="5.0" top="5.0" />
+                     </padding>
+                  </VBox>
+               </content></ScrollPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
