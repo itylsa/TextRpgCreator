@@ -83,13 +83,14 @@ public class TagEditorController extends Controller implements Initializable {
             choicePane.getChildren().clear();
             addThings("");
         });
+        loadTags();
     }
 
     public void closeTagEditor() {
         App.closeEditor();
         String tags = "";
         for(TagController tc : tagsList) {
-            tags = tags + tc.getGroupLabel().getText() + tc.getTagLabel().getText() + tc.getValueLabel().getText();
+            tags = tags + tc.getGroupLabel().getText() + tc.getTagLabel().getText() + tc.getValueLabel().getText() + ";";
         }
         if(scenario != null) {
             App.openEditor("ScenarioEditor", scenario, null);
@@ -118,7 +119,7 @@ public class TagEditorController extends Controller implements Initializable {
         ComboBox cb = new ComboBox();
         cb.setItems(list);
         cb.setOnAction((e) -> {
-            tagList.setList(App.getFileController().getTags(groupCb.getValue().toString()));
+//            tagList.setList(App.getFileController().getTags(groupCb.getValue().toString()));
             int a = choicePane.getChildren().size() - choicePane.getChildren().indexOf(cb) - 1;
             for(int i = 0; i < a; i++) {
                 choicePane.getChildren().remove(choicePane.getChildren().size() - 1);
@@ -220,6 +221,17 @@ public class TagEditorController extends Controller implements Initializable {
         return list;
     }
 
+    public List<ComboBox> getAllTagComboBoxes() {
+        List<ComboBox> list = new ArrayList<>();
+        int a = choicePane.getChildren().size();
+        for(int i = 0; i < a; i++) {
+            if(choicePane.getChildren().get(i).getStyle() == null || choicePane.getChildren().get(i).getStyle().equals("")) {
+                list.add((ComboBox) choicePane.getChildren().get(i));
+            }
+        }
+        return list;
+    }
+
     public void removeLastEmptyValueComboBox() {
         List<ComboBox> list = getAllValueComboBoxes();
         ComboBox box = null;
@@ -231,15 +243,71 @@ public class TagEditorController extends Controller implements Initializable {
         choicePane.getChildren().remove(box);
     }
 
+    private void loadTags() {
+        String tags = "";
+        if(scenario != null) {
+            tags = scenario.getTags();
+        } else {
+            tags = choice.getTags();
+        }
+        if(tags != null && !tags.isEmpty()) {
+            List<String> tl = Arrays.asList(tags.split("\\;"));
+            for(String s : tl) {
+                TagController tc = (TagController) App.loadFXMLController("Tag");
+                List<String> l = Arrays.asList(s.split("\\:"));
+                if(l.size() > 0 && !l.get(0).equals("")) {
+                    tc.setGroupLabel(l.get(0) + ":");
+                } else {
+                    tc.setGroupLabel("");
+                }
+                if(l.size() > 1 && !l.get(1).equals("")) {
+                    tc.setTagLabel(l.get(1) + ":");
+                } else {
+                    tc.setTagLabel("");
+                }
+                if(l.size() > 2 && !l.get(2).equals("")) {
+                    tc.setValueLabel(l.get(2));
+                } else {
+                    tc.setValueLabel("");
+                }
+                tagsList.add(tc);
+                tagsBox.getChildren().add(tc.getAnchorParentPane());
+            }
+        }
+    }
+
     @FXML
     public void saveTag() {
-        ComboBox c = (ComboBox) choicePane.getChildren().get(choicePane.getChildren().size() - 1);
-//        c.setItems(FXCollections.observableArrayList("asd", "asd", "asd"));
-        c.getItems().add("asd");
         TagController tc = (TagController) App.loadFXMLController("Tag");
-        tc.setGroupLabel(groupCb.getValue().toString());
-        tc.setTagLabel("asdjlasjd lkasjkd jsakdj lkasjdlk jaslka");
-        tc.setValueLabel("15,15,15,15,15,15");
+        tc.setGroupLabel(groupCb.getValue().toString() + ":");
+        List<ComboBox> tcbs = getAllTagComboBoxes();
+        String s = "";
+        for(int i = 0; i < tcbs.size(); i++) {
+            ComboBox c = tcbs.get(i);
+            if(c.getValue() != null) {
+                s = s + c.getValue().toString();
+                if(i != tcbs.size() - 1) {
+                    s = s + ">";
+                }
+            }
+        }
+        s = s + ":";
+        tc.setTagLabel(s);
+        List<ComboBox> vcbs = getAllValueComboBoxes();
+        s = "";
+        for(int i = 0; i < vcbs.size(); i++) {
+            ComboBox c = vcbs.get(i);
+            if(c.getValue() != null) {
+                s = s + c.getValue().toString();
+                if(i != vcbs.size() - 1 && !c.getValue().toString().equals("")) {
+                    s = s + ",";
+                }
+            }
+        }
+        if(s.endsWith(",")) {
+            s = s.substring(0, s.lastIndexOf(","));
+        }
+        tc.setValueLabel(s);
         tagsBox.getChildren().add(tc.getAnchorParentPane());
         tagsList.add(tc);
     }
@@ -266,5 +334,9 @@ public class TagEditorController extends Controller implements Initializable {
 
     public ScrollPane getTagsScrollPane() {
         return tagsScrollPane;
+    }
+
+    public List<TagController> getTagsList() {
+        return tagsList;
     }
 }

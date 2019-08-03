@@ -1,0 +1,9 @@
+Random
+-Difficulty()
+-Enemy Count()
+-Loot
+--Quality(rare,epic,legendary)
+--Quantity()
+Defined
+-Enemy(Geralt the slayer,Nooblord,Kobold of Doom)
+-Loot(Knife of death, Club of hell)

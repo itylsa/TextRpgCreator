@@ -1,0 +1,17 @@
+<list>
+	<type>simple</type>
+	<items>
+		<item>
+			<name>Warrior</name>
+		</item>
+		<item>
+			<name>Mage</name>
+		</item>
+		<item>
+			<name>Archer</name>
+		</item>
+		<item>
+			<name>Rogue</name>
+		</item>
+	</items>
+</list>

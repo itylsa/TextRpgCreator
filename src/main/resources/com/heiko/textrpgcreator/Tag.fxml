@@ -16,7 +16,7 @@
                <children>
                   <VBox maxWidth="5000.0" prefHeight="40.0" prefWidth="5000.0">
                      <children>
-                        <HBox alignment="CENTER_LEFT" maxWidth="5000.0" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+                        <HBox alignment="CENTER_LEFT" maxWidth="5000.0" prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <Label fx:id="groupLabel" text="Label" textFill="#5754ff">
                                  <font>

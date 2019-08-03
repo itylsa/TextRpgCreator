@@ -254,6 +254,7 @@ public class FileController {
     private void tt(Tag t, int i) {
         System.out.println("Level " + i);
         System.out.println("Tag Name " + t.getTagName());
+        System.out.println("SubTags " + t.getSubTags());
         if(t.getValues() != null && !t.getValues().isEmpty()) {
             System.out.println("Values " + t.getValues());
         }
@@ -303,18 +304,95 @@ public class FileController {
             tag = getNewTag(line.split("\\(")[0]);
             line = line.substring(line.indexOf("("));
         }
-        if(line.length() > 2 && line.contains(",")) {
-            line = line.split("\\(")[1].split("\\)")[0];
-            tag.setAllValues(Arrays.asList(line.split("\\,")));
-        } else if(line.length() > 2 && !line.contains(",")) {
-            line = line.split("\\(")[1].split("\\)")[0];
-            tag.setAllValues(Arrays.asList(line));
+        if(line.length() > 2) {
+            if(line.contains(",")) {
+                List<String> l = Arrays.asList(line.split("\\,"));
+                List<String> values = new ArrayList<>();
+                for(String s : l) {
+                    values.addAll(readValues(s.replaceAll("[\\(\\)\\,]", "")));
+                }
+                tag.setAllValues(values);
+            } else {
+                tag.setAllValues(readValues(line.replaceAll("[\\(\\)\\,]", "")));
+            }
         } else if(line.length() == 2) {
             tag.setAllValues(Arrays.asList("novalues"));
         } else {
             tag.setAllValues(Arrays.asList(""));
         }
+//        if(line.length() > 2 && line.contains(",")) {
+//            line = line.split("\\(")[1].split("\\)")[0];
+//            tag.setAllValues(Arrays.asList(line.split("\\,")));
+//        } else if(line.length() > 2 && !line.contains(",")) {
+//            line = line.split("\\(")[1].split("\\)")[0];
+//            tag.setAllValues(Arrays.asList(line));
+//        } else if(line.length() == 2) {
+//            tag.setAllValues(Arrays.asList("novalues"));
+//        } else {
+//            tag.setAllValues(Arrays.asList(""));
+//        }
         return tag;
+    }
+
+    private List<String> readValues(String name) {
+        File file = new File("Assets/Values/" + name + ".xml");
+        if(!file.exists()) {
+            return Arrays.asList("");
+        }
+        List<String> valueList = new ArrayList<>();
+        SAXBuilder builder = new SAXBuilder();
+        try {
+            Document document = (Document) builder.build(file);
+            Element list = document.getRootElement();
+            String type = list.getChildText("type");
+
+            switch(type) {
+                case "simple":
+                    valueList = readSimpleValues(list, valueList);
+                    break;
+                case "item":
+                    break;
+            }
+
+//            App.setAdventureName(list.getChildText("Name"));
+//            App.setHighestId(Integer.parseInt(list.getChildText("HighestId")));
+//
+//            List<Element> scenarios = list.getChild("Scenarios").getChildren();
+//            List<Element> choices = new ArrayList<>();
+//            for(Element s : scenarios) {
+//                Scenario scenario = new Scenario(Integer.valueOf(s.getChildText("Id")), s.getChildText("Tags"), s.getChildText("Text"), null);
+//                App.setHighestId(scenario.getId());
+//
+//                App.getWindowController().addDragableScenario(
+//                        Double.valueOf(s.getChild("Position").getChildText("X")),
+//                        Double.valueOf(s.getChild("Position").getChildText("Y")),
+//                        scenario);
+//
+//                for(Element choice : s.getChild("Choices").getChildren("Choice")) {
+//                    choices.add(choice);
+//                }
+//            }
+//            for(Element c : choices) {
+//                Scenario start = App.findScenario(Integer.valueOf(c.getParentElement().getParentElement().getChildText("Id")));
+//                Scenario end = App.findScenario(Integer.valueOf(c.getChildText("Id")));
+//                App.getWindowController().addArrow(start, end, Integer.valueOf(c.getChildText("Id")), c.getChildText("Tags"), c.getChildText("Text"));
+//            }
+//            App.showInfoBox("Progress loaded!");
+//            App.startAutosave();
+        } catch(JDOMException ex) {
+            Logger.getLogger(FileController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch(IOException ex) {
+            Logger.getLogger(FileController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return valueList;
+    }
+
+    private List<String> readSimpleValues(Element list, List<String> valueList) {
+        List<Element> items = list.getChild("items").getChildren("item");
+        for(Element item : items) {
+            valueList.add(item.getChildText("name"));
+        }
+        return valueList;
     }
 
     private ObservableList readLines(File file) {

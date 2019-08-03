@@ -5,6 +5,7 @@
  */
 package com.heiko.textrpgcreator.controller.node;
 
+import com.heiko.textrpgcreator.App;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -37,7 +38,8 @@ public class TagController extends Controller implements Initializable {
     
     @FXML
     private void deleteTag() {
-        
+        App.getTagEditorController().getTagsBox().getChildren().remove(getAnchorParentPane());
+        App.getTagEditorController().getTagsList().remove(this);
     }
 
     public Parent getPane() {

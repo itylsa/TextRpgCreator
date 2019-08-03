@@ -1,0 +1,17 @@
+<list>
+	<type>simple</type>
+	<items>
+		<item>
+			<name>Human</name>
+		</item>
+		<item>
+			<name>Elf</name>
+		</item>
+		<item>
+			<name>Orc</name>
+		</item>
+		<item>
+			<name>Gnome</name>
+		</item>
+	</items>
+</list>

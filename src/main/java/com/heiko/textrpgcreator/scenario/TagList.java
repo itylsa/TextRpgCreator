@@ -19,6 +19,8 @@ public class TagList {
 
     private List<Tag> list = new ArrayList<>();
 
+    private String parent = "";
+
     public ObservableList getObservableList(String tagName) {
         ObservableList<String> list = FXCollections.observableArrayList();
         Tag tag = new Tag();
@@ -38,10 +40,11 @@ public class TagList {
             list.add("novalues");
             return list;
         } else if(list.isEmpty() && !tag.getValues().isEmpty()) {
-            list = tag.getValues();
+            list.addAll(tag.getValues());
             list.add(0, null);
             return list;
         }
+        parent = tag.getTagName();
         return list;
     }
 
@@ -50,6 +53,9 @@ public class TagList {
         for(Tag t : list) {
             if(t.getTagName().equals(tagName)) {
                 tag = t;
+                return tag;
+            }
+            if(tag.getTagName() != null && tag.getTagName().equals(tagName)) {
                 return tag;
             }
             if(!t.getSubTags().isEmpty()) {
@@ -62,8 +68,11 @@ public class TagList {
     private Tag searchSubTag(Tag t, String tagName) {
         Tag tag = new Tag();
         for(Tag tt : t.getSubTags()) {
-            if(tt.getTagName().equals(tagName)) {
+            if(tt.getTagName().equals(tagName) && tt.getParent().getTagName().equals(parent)) {
                 tag = tt;
+                return tag;
+            }
+            if(tag.getTagName() != null && tag.getTagName().equals(tagName) && tt.getParent().getTagName().equals(parent)) {
                 return tag;
             }
             if(!tt.getSubTags().isEmpty()) {

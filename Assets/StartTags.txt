@@ -1,11 +1,8 @@
 No special requirement
-Class(Warrior,Mage,Archer,Rogue)
+Class(Classes)
 Level
--Above
---test
----test2
-----test3(asd,asd)
+-Above()
 -Below()
 -Exact()
-Race(Human,Wolf)
-Gender(Male,Female)
+Race(Races)
+Gender(Genders)

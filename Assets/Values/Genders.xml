@@ -1,0 +1,11 @@
+<list>
+	<type>simple</type>
+	<items>
+		<item>
+			<name>Male</name>
+		</item>
+		<item>
+			<name>Female</name>
+		</item>
+	</items>
+</list>
